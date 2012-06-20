@@ -63,14 +63,14 @@
 	  <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
 	  <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
 	  <arg value="--ignore=${basedir}/build,${basedir}/inc/ezpdf,${basedir}/entradas2/jpgraph" />	
-      <arg path="." />
+      <arg path="${basedir}" />
 	  </exec>
 	 </target>
 
 	 <target name="phpmd"
 	         description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
 	  <exec executable="phpmd">
-	   <arg path="." />
+	   <arg path="${basedir}" />
 	   <arg value="text" />
 	   <arg value="codesize,design,naming,unusedcode"/>
 	   <arg value="--exclude" /> 
@@ -97,7 +97,7 @@
 	    <arg value="-v" />
 	    <arg value="--standard=Zend" />
 	    <arg value="--encoding=UTF-8" />        
-	  	<arg path="." />
+	  	<arg path="${basedir}" />
 	  </exec>
 	 </target>
 
@@ -109,7 +109,7 @@
 	   <arg value="-v" />
 	   <arg value="--standard=Zend" />
 	   <arg value="--encoding=UTF-8" />
-	   <arg path="." />
+	   <arg path="${basedir}" />
 	  </exec>
 	 </target>
 
