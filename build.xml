@@ -59,10 +59,10 @@
 
 	 <target name="pdepend" description="Calculate software metrics using PHP_Depend">
 	  <exec executable="pdepend">
-	  <arg value="--jdepend-xml=build/logs/jdepend.xml" />
-	  <arg value="--jdepend-chart=build/pdepend/dependencies.svg" />
-	  <arg value="--overview-pyramid=build/pdepend/overview-pyramid.svg" />
-	  <arg value="--ignore=build,inc/ezpdf,entradas2/jpgraph" />	
+	  <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
+	  <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
+	  <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
+	  <arg value="--ignore=${basedir}/build,${basedir}/inc/ezpdf,${basedir}/entradas2/jpgraph" />	
       <arg path="." />
 	  </exec>
 	 </target>
@@ -74,7 +74,7 @@
 	   <arg value="text" />
 	   <arg value="codesize,design,naming,unusedcode"/>
 	   <arg value="--exclude" /> 
-	   <arg path="build/,inc/ezpdf/,entradas2/jpgraph/" />	
+	   <arg path="${basedir}/build/,${basedir}/inc/ezpdf/,${basedir}/entradas2/jpgraph/" />	
 	  </exec>
 	 </target>
 
@@ -84,16 +84,16 @@
 	   <arg value="xml" />
 	   <arg value="codesize,design,naming,unusedcode"/>
 	   <arg value="--reportfile" />
-	   <arg path="build/logs/pmd.xml" />
+	   <arg path="${basedir}/build/logs/pmd.xml" />
 	   <arg value="--exclude"/> 
-	   <arg path="build/,inc/ezpdf/,entradas2/jpgraph/"/>
+	   <arg path="${basedir}/build/,${basedir}/inc/ezpdf/,${basedir}/entradas2/jpgraph/"/>
 	  </exec>
 	 </target>
 
 	 <target name="phpcs"
 	         description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
 	  <exec executable="phpcs">
-	  	<arg value="--ignore=build/,inc/ezpdf/,entradas2/jpgraph/"/>
+	  	<arg value="--ignore=${basedir}/build/,${basedir}/inc/ezpdf/,${basedir}/entradas2/jpgraph/"/>
 	    <arg value="-v" />
 	    <arg value="--standard=Zend" />
 	    <arg value="--encoding=UTF-8" />        
@@ -103,9 +103,9 @@
 
 	 <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
 	  <exec executable="phpcs" output="/dev/null">
-       <arg value="--ignore=build/,inc/ezpdf/,entradas2/jpgraph/"/>
+       <arg value="--ignore=${basedir}/build/,${basedir}/inc/ezpdf/,${basedir}/entradas2/jpgraph/"/>
 	   <arg value="--report=checkstyle" />
-	   <arg value="--report-file=build/logs/checkstyle.xml" />
+	   <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
 	   <arg value="-v" />
 	   <arg value="--standard=Zend" />
 	   <arg value="--encoding=UTF-8" />

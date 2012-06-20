@@ -1,10 +1,19 @@
 <?php
+/**
+ * El ezpdf esta deprecated total cambiar
+ */
 require_once '../inc/variables.php';
 require_once '../inc/ezpdf/class.ezpdf.php';
 if((isset($_GET['factura'])) || (isset($_POST['factura']))) {
     $factura = ( isset( $_POST['factura'] ) ) ? $_POST['factura']:$_GET['factura'];
     
     //calculo del total con iva
+    /**
+     * @deprecated
+     * @param unknown_type $importe
+     * @param unknown_type $iva
+     * @return number
+     */
 	function iva($importe,$iva)
 	{
 		$total = round($importe + ($importe * $iva)/100,2);
@@ -31,6 +40,11 @@ if((isset($_GET['factura'])) || (isset($_POST['factura']))) {
 		return $marcado;
 	}
 /*******************************************************************************************************************/
+	/**
+	 * @deprecated
+	 * @param unknown_type $stamp
+	 * @return string
+	 */
 	function cambiaf($stamp) //funcion del cambio de fecha
 	{
 		//formato en el que llega aaaa-mm-dd o al reves
