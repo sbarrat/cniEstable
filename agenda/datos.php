@@ -1,4 +1,14 @@
 <?php
+/**
+ * Manejador de Funciones de la agenda
+ * 
+ * Las opciones son enviadas via post y segun la opcion marcada se ejecuta
+ * una u otra funcion
+ * 
+ * @author Ruben Lacasa <ruben@ensenalia.com>
+ * @copyright Copyright (c) 2012, Ruben Lacasa
+ * @package agenda
+ */
 require_once '../inc/variables.php';
 /*
  * Chequeo de errores activado

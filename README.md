@@ -1,5 +1,8 @@
 CNI 2.0e
 ========
+License:
+Creative Commons Atribución-NoComercial-SinDerivadas 3.0 Unported 
+http://creativecommons.org/licenses/by-nc-nd/3.0/
 
 Requeriments
 ------------
