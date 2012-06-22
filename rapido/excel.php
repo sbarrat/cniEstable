@@ -66,11 +66,11 @@ if (isset($_GET['mes']) && isset($_GET['cliente'])) {
 	$sql = "Select * from tarifa_cliente 
 	where ID_Cliente like ".$vars['cliente']." order by Servicio";
 	$consulta = mysql_query($sql,$con);
-	while ( true == ($resultado = mysql_fetch_array($consulta))) {
+	while ( true == ($dato = mysql_fetch_array($consulta))) {
 		//parciales
-		$parcial = $parcial + $resultado[4];
+		$parcial = $parcial + $dato[4];
 		//subtotal
-		$subtotal = $resultado[4]+($resultado[4]*$resultado[5])/100;	
+		$subtotal = $dato[4]+($dato[4]*$dato[5])/100;	
 //acumulados
 		$total = $subtotal + $total;
 		//$cantidad = $resultado[1] + $cantidad;
@@ -79,14 +79,14 @@ if (isset($_GET['mes']) && isset($_GET['cliente'])) {
 		$color .= ( $j%2 == 0) ? "'#dddddd'": "'#ffffff'";
 		$cadena .= "<tr>
 		<td ".$color."><p class='texto'>Mensualidad </p></td>
-		<td ".$color."><p class='texto'>".ucfirst($resultado[2])." 
-		".ucfirst($resultado[6])."</p></td>
+		<td ".$color."><p class='texto'>".ucfirst($dato[2])." 
+		".ucfirst($dato[6])."</p></td>
 		<td ".$color." align='right'>".number_format("1",2,',','.')."&nbsp;</td>
 		<td ".$color." align='right'>".
-		    number_format($resultado[4],2,',','.')."&euro;&nbsp;</td>
+		    number_format($dato[4],2,',','.')."&euro;&nbsp;</td>
 		<td ".$color." align='right'>".
-		    number_format($resultado[4],2,',','.')."&euro;&nbsp;</td>
-		<td ".$color." align='right'>".$resultado[5]."%&nbsp;</td>
+		    number_format($dato[4],2,',','.')."&euro;&nbsp;</td>
+		<td ".$color." align='right'>".$dato[5]."%&nbsp;</td>
 		<td ".$color." align='right'>".
 		    number_format($subtotal,2,',','.')."&euro;</td></tr>";
 		$cantidad++;
@@ -99,20 +99,20 @@ if (isset($_GET['mes']) && isset($_GET['cliente'])) {
 	    from z_almacen where cliente like ".$vars['cliente']." 
 	    and month(fin) like ".$vars['mes']." and year(fin) like ".$_GET['anyo'];
 	$consulta = mysql_query($sql,$con);
-    while ( true == ($resultado = mysql_fetch_array($consulta))) {
-		$dias_almacen = $resultado[1];
-		$subtotala = $resultado[0]*$dias_almacen*0.70;
+    while ( true == ($dato = mysql_fetch_array($consulta))) {
+		$dias_almacen = $dato[1];
+		$subtotala = $dato[0]*$dias_almacen*0.70;
 		$totala = $subtotala* 1.16;
 		$cadena.="<tr>
 		<td>&nbsp;</td>
 		<td ><p class='texto'>Bultos Almacenados del  
-		".cambiaf($resultado[2])." al ".cambiaf($resultado[3])."</p></td>
-		<td align='right'>".number_format($resultado[0],2,',','.')."&nbsp;</td>
+		".cambiaf($dato[2])." al ".cambiaf($dato[3])."</p></td>
+		<td align='right'>".number_format($dato[0],2,',','.')."&nbsp;</td>
 		<td align='right'>0,70&euro;&nbsp;</td>
 		<td align='right'>".number_format($subtotala,2,',','.')."&euro;&nbsp;</td>
 		<td align='right'>16%&nbsp;</td>
 		<td align='right'>".number_format($totala,2,',','.')."&euro;&nbsp;</td></tr>";
-		$cantidad = $resultado[0] + $cantidad;
+		$cantidad = $dato[0] + $cantidad;
 		$bruto = $bruto + $subtotala;
 		$total = $totala + $total;
 		$celdas++;
@@ -145,28 +145,28 @@ if (isset($_GET['mes']) && isset($_GET['cliente'])) {
     	and '".$_GET['mes']."' like month(c.fecha) order by c.fecha asc";
     }
     $consulta = mysql_query($sql,$con);
-	while (true == ( $resultado=mysql_fetch_array($consulta)) ){
+	while (true == ( $dato=mysql_fetch_array($consulta)) ){
 		$color = "bgcolor = ";
-	    $parcial = $parcial + $resultado[4];
-		$subtotal = $resultado[4]+($resultado[4]*$resultado[5])/100;	
+	    $parcial = $parcial + $dato[4];
+		$subtotal = $dato[4]+($dato[4]*$dato[5])/100;	
 //acumulados
 		$total = $subtotal + $total;
-		$cantidad = $resultado[1] + $cantidad;
+		$cantidad = $dato[1] + $cantidad;
 //fin acumulados
 		$j++;
 		$color .= ( $j%2 == 0 ) ? "'#dddddd'" : "'#ffffff'";
 		//number_format($resultado[4],2,',','.')
 		$cadena.= "<tr><td ".$color.">
-		<p class='texto'>".$resultado[2]."</p></td>
-		<td ".$color."><p class='texto'>".ucfirst($resultado[0])." 
-		".ucfirst($resultado[7])."</p></td>
-		<td ".$color." align='right'>".number_format($resultado[1],2,',','.').
+		<p class='texto'>".$dato[2]."</p></td>
+		<td ".$color."><p class='texto'>".ucfirst($dato[0])." 
+		".ucfirst($dato[7])."</p></td>
+		<td ".$color." align='right'>".number_format($dato[1],2,',','.').
 		"&nbsp;</td>
-		<td ".$color." align='right'>".number_format($resultado[3],2,',','.').
+		<td ".$color." align='right'>".number_format($dato[3],2,',','.').
 		"&euro;&nbsp;</td>
-		<td ".$color." align='right'>".number_format($resultado[4],2,',','.').
+		<td ".$color." align='right'>".number_format($dato[4],2,',','.').
 		"&euro;&nbsp;</td>
-		<td ".$color." align='right'>".$resultado[5]."%&nbsp;</td>
+		<td ".$color." align='right'>".$dato[5]."%&nbsp;</td>
 		<td ".$color." align='right'>".number_format($subtotal,2,',','.').
 		"&euro;&nbsp;</td></tr>";
 	}

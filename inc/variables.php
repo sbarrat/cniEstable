@@ -48,9 +48,9 @@ define('ALMACENAJE', 0.70);
 /**
  * Conexion a la base de datos
  * 
- * @var resource
+ * @var resource $con
+ * @deprecated - Sustituir por clase de conexion
  */
-
 $con = mysql_connect('localhost', 'cni', 'inc') or die (mysql_error());
 /**
  * Establecemos el juego de caracteres de la conexion
@@ -93,6 +93,7 @@ setlocale(LC_NUMERIC, 'es_ES');
  * Clase Estatica
  */
 require_once 'Cni.php';
+require_once 'CniQuery.php';
 /**
  * Devuelve el precio formateado con 2 decimales separados por , miles . y
  * el simbolo del Euro;
@@ -136,7 +137,7 @@ function clase($k)
  *
  * @param mixed $vars
  * @todo - Cambiar a clase de conexion de base de datos
- *
+ * @deprecated - usar CniDB::sanitize()
  */
 function sanitize( &$vars )
 {

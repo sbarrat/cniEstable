@@ -61,10 +61,10 @@ if (isset ( $_POST ['cliente'] )) {
 	if (isset ( $_POST ['item'] )) {
 		$sql = "Select * from z_almacen where id like ".$_POST['item'];
 		$consulta = mysql_query ( $sql, $con );
-		$resultado = mysql_fetch_array ( $consulta );
-		$s_bulto = $resultado [2];
-		$s_finicio = cambiaf ( $resultado [3] );
-		$s_ffinal = cambiaf ( $resultado [4] );
+		$dato = mysql_fetch_array ( $consulta );
+		$s_bulto = $dato [2];
+		$s_finicio = cambiaf ( $dato [3] );
+		$s_ffinal = cambiaf ( $dato [4] );
 		$opcion = $_POST ['item'];
 		$boton = "[*]Modificar";
 	} else {
@@ -114,11 +114,11 @@ if (isset ( $_GET ['tabla'] )) {
 	<th style='width:50px'></th>
 	<tr/>";
 	$i = 0;
-	while ( true == ($resultado = mysql_fetch_array ( $consulta )) ) {
+	while ( true == ($dato = mysql_fetch_array ( $consulta )) ) {
 		$i ++;
-		$inicio = cambiaf ( $resultado [3] );
-		$fin = cambiaf ( $resultado [4] );
-		$promedio = calculo ( $resultado [3], $resultado [4], $resultado [2] );
+		$inicio = cambiaf ( $dato [3] );
+		$fin = cambiaf ( $dato [4] );
+		$promedio = calculo ( $dato [3], $dato [4], $dato [2] );
 		if ($fin == "00/00/0000")
 			$fin = "En Almacen"; // $hoy;
 		if ($fin == "En Almacen")
@@ -129,13 +129,13 @@ if (isset ( $_GET ['tabla'] )) {
 			$color = "#dddddd"; // "#DDE0FF";
 		$muestra .= "<tr >
 		<td bgcolor='" . $color . "' class='celda' style='width:25px' align='center'>" . $i . "</td>
-		<td bgcolor='" . $color . "' class='celda' style='width:25px' align='center'>" . $resultado [2] . "</td>
+		<td bgcolor='" . $color . "' class='celda' style='width:25px' align='center'>" . $dato [2] . "</td>
 		<td bgcolor='" . $color . "' class='celda' style='width:150px' align='center'>" . $inicio . "</td>
 		<td bgcolor='" . $color . "' class='celda' style='width:150px' align='center'>" . $fin . "</td>
 		<td bgcolor='" . $color . "' class='celda' style='width:150px' align='center'>" . $promedio . "</td>
 		<td bgcolor='" . $color . "' class='celda' style='width:50px' align='center'>
-		<img src='../imagenes/editar.png' class='img_edit' onclick='edita_almacen(" . $resultado [0] . ")' />
-		<img src='../imagenes/borrar.png' class='img_edit' onclick='borra_almacen(" . $resultado [0] . ")' /></th>
+		<img src='../imagenes/editar.png' class='img_edit' onclick='edita_almacen(" . $dato [0] . ")' />
+		<img src='../imagenes/borrar.png' class='img_edit' onclick='borra_almacen(" . $dato [0] . ")' /></th>
 		</tr>";
 	}
 	$muestra .= "</table></center>";

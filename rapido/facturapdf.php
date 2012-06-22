@@ -91,7 +91,7 @@ if((isset($_GET['factura'])) || (isset($_POST['factura']))) {
 	join regfacturas as r on r.id_cliente = c.id 
 	where r.codigo like ".$factura;
 	$consulta = mysql_query($sql,$con);
-	$resultado = mysql_fetch_array($consulta);
+	$dato = mysql_fetch_array($consulta);
 	if((isset($_GET['dup']))||(isset($_POST['dup']))){
 		$pdf->addText(363,730,16,"<b>FACTURA (DUPLICADO)<b>");
 		$dup = true;
@@ -102,17 +102,17 @@ if((isset($_GET['factura'])) || (isset($_POST['factura']))) {
 	}
 	$pdf->rectangle(263,660,280,50);
 //ID CLIENTE
-	$cliente = $resultado[6];
-	$texto="FECHA:".cambiaf($resultado[5]);
+	$cliente = $dato[6];
+	$texto="FECHA:".cambiaf($dato[5]);
 	$pdf->addText(50,700,12,$texto);
 	$texto="Num. FACTURA:".$factura;
 	$pdf->addText(50,685,12,$texto);
 /*Datos cliente*/
-	$pdf->addText(265,698,10,"<b>".utf8_decode($resultado[0])."</b>");
-	$pdf->addText(265,687,10,"<b>".utf8_decode($resultado[1])."</b>");
-	$pdf->addText(265,676,10,"<b>".utf8_decode($resultado[2])."-".
-	    utf8_decode($resultado[3])."</b>");
-	$pdf->addText(265,665,10,"<b>NIF:".$resultado[4]."</b>");
+	$pdf->addText(265,698,10,"<b>".utf8_decode($dato[0])."</b>");
+	$pdf->addText(265,687,10,"<b>".utf8_decode($dato[1])."</b>");
+	$pdf->addText(265,676,10,"<b>".utf8_decode($dato[2])."-".
+	    utf8_decode($dato[3])."</b>");
+	$pdf->addText(265,665,10,"<b>NIF:".$dato[4]."</b>");
 //Asi se pone el fondo en todas
      
 //Paso de datos de historico
@@ -124,20 +124,20 @@ if((isset($_GET['factura'])) || (isset($_POST['factura']))) {
 	$cantidad = 0;
 	$j = 0;
 	for($i=0;$i<=3;$i++)
-		while(true == ($resultado=mysql_fetch_array($consulta))) {
-			$importe_sin_iva = $resultado['cantidad']*$resultado['unitario'];
+		while(true == ($dato=mysql_fetch_array($consulta))) {
+			$importe_sin_iva = $dato['cantidad']*$dato['unitario'];
 			$data[]=array(
-			"Servicio"=>ucfirst(utf8_decode($resultado[2]))." ".ucfirst(utf8_decode($resultado[6])),
-			"Cant."=>number_format($resultado['cantidad'],2,',','.'),
-			"P/Unitario"=>number_format($resultado['unitario'],2,',','.')."!",
+			"Servicio"=>ucfirst(utf8_decode($dato[2]))." ".ucfirst(utf8_decode($dato[6])),
+			"Cant."=>number_format($dato['cantidad'],2,',','.'),
+			"P/Unitario"=>number_format($dato['unitario'],2,',','.')."!",
 			"Importe"=>number_format($importe_sin_iva,2,',','.')."!",
-			"IVA"=>$resultado['iva']."%",
-			"TOTAL"=>number_format(iva($importe_sin_iva,$resultado['iva']),2,',','.')."!");
-			$total = $total + iva($importe_sin_iva,$resultado[5]);
+			"IVA"=>$dato['iva']."%",
+			"TOTAL"=>number_format(iva($importe_sin_iva,$dato['iva']),2,',','.')."!");
+			$total = $total + iva($importe_sin_iva,$dato[5]);
 			$bruto = $bruto + $importe_sin_iva;
 			$celdas++;
 			//$cantidad++;
-			$cantidad = $cantidad + number_format($resultado['cantidad'],2,',','.');
+			$cantidad = $cantidad + number_format($dato['cantidad'],2,',','.');
 			$j++;
 		}
 		for($k=$j;$k<=30;$k++)
@@ -153,9 +153,9 @@ sum(round((cantidad*unitario)*(iva/100),2)) as iva,
 sum((cantidad*unitario) + round((cantidad*unitario)*(iva/100),2)) as total
 from historico where factura like '$factura' group by factura";	
 	$consulta = mysql_query($sql,$con);
-	$resultado = @mysql_fetch_array($consulta);
+	$dato = @mysql_fetch_array($consulta);
 		$data[]=array("Servicio"=>'TOTALES',
-"Cant."=>number_format($resultado[0],2,',','.'),"P/Unitario"=>"","Importe"=>number_format($resultado[1],2,',','.')."!","IVA"=>"","TOTAL"=>number_format($resultado[3],2,',','.')."!");
+"Cant."=>number_format($dato[0],2,',','.'),"P/Unitario"=>"","Importe"=>number_format($dato[1],2,',','.')."!","IVA"=>"","TOTAL"=>number_format($dato[3],2,',','.')."!");
 
 		$pdf->ezSetY(640);
 //Opciones de tabla
@@ -168,7 +168,7 @@ from historico where factura like '$factura' group by factura";
 			'TOTAL'=>array('justification'=>'right')));
 
 		$pdf->ezTable($data,6,"",$options);
-		$pie[]=array("TOTAL BRUTO"=>number_format($resultado[1],2,',','.')."!","IVA"=>number_format($resultado[2],2,',','.')."!","TOTAL"=>number_format($resultado[3],2,',','.')."!");
+		$pie[]=array("TOTAL BRUTO"=>number_format($dato[1],2,',','.')."!","IVA"=>number_format($dato[2],2,',','.')."!","TOTAL"=>number_format($dato[3],2,',','.')."!");
 		$pdf->ezText("");
 		$pdf->ezTable($pie,3,"",
 			array('xPos'=>'398','width'=>'300','maxWidth'=>'300',
@@ -179,20 +179,20 @@ from historico where factura like '$factura' group by factura";
 		/*Modificar para sacar de regfacturas*/
 		$sql = "Select fpago,obs_fpago,obs_alt, pedidoCliente from regfacturas where codigo like $factura";
 		$consulta = mysql_query($sql,$con);
-		$resultado = mysql_fetch_array($consulta);
+		$dato = mysql_fetch_array($consulta);
 //$pdf->ezText("");
 		$pdf->ezSetY( 115 );
-		$pdf->ezText("Forma de Pago:" .$resultado[0]);
+		$pdf->ezText("Forma de Pago:" .$dato[0]);
 		//if(($resultado[fpago] != "Cheque") && ($resultado[fpago] != "Contado") && ($resultado[fpago] != "Tarjeta credito")&& ($resultado[fpago] != utf8_decode("Liquidación")))
 		//$pdf->ezText("CC:".$resultado[1]);
-		$observacion = preg_replace('|<br\/>|', "\n\r", $resultado[1]);
+		$observacion = preg_replace('|<br\/>|', "\n\r", $dato[1]);
 		$observacion = preg_replace('|\(|' ,"\n\r(", $observacion );
 		$observacion = preg_replace('|Vto|',"\n\rVto", $observacion );
 		$observacion = preg_replace('|Vencimien|',"\n\rVencimien", $observacion );
-		$pdf->ezText(utf8_decode($observacion)." ".utf8_decode($resultado[2]));
+		$pdf->ezText(utf8_decode($observacion)." ".utf8_decode($dato[2]));
 		// Agregamos si existe en Pedido de Cliente
-		if ( !is_null( $resultado['pedidoCliente'] ) ) {
-			$pdf->ezText( $resultado['pedidoCliente'] );
+		if ( !is_null( $dato['pedidoCliente'] ) ) {
+			$pdf->ezText( $dato['pedidoCliente'] );
 		}
 
 //Si se ha mandado a guardar escribimos en el fichero

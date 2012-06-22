@@ -5,16 +5,16 @@ if (isset($_POST[contrato]))
 //1.-Cargamos datos y tablas necesarios para llenar el formulario de ese contrato	
 $sql = "Select * from z_contratos where id like $_POST[contrato]";
 $consulta = mysql_query($sql,$con);
-$resultado = mysql_fetch_array($consulta);
-$fichero = $resultado[2];
-$totcamp = $resultado[3];
+$dato = mysql_fetch_array($consulta);
+$fichero = $dato[2];
+$totcamp = $dato[3];
 //buscamos los alias
 $sql = "Select * from z_ccontratos where contrato like $_POST[contrato] order by orden";
 $consulta = mysql_query($sql,$con);
 $j=0;
-while(true == ($resultado = mysql_fetch_array($consulta)))
+while(true == ($dato = mysql_fetch_array($consulta)))
 {
-	$muestra[$j]=$resultado[campof];
+	$muestra[$j]=$dato[campof];
 	$j++;
 }
 echo "<input type='hidden' id='fichero' value='".$fichero."' />";

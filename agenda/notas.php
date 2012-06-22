@@ -4,9 +4,9 @@
 	{
 		$sql ="Select * from notas where id like ".$_POST[nota]."";
 		$consulta = @mysql_query($sql,$con);
-		$resultado = @mysql_fetch_array($consulta);
-		$hoy = cambiaf($resultado[fecha]);
-		$nota = $resultado[nota];
+		$dato = @mysql_fetch_array($consulta);
+		$hoy = cambiaf($dato[fecha]);
+		$nota = $dato[nota];
 		$boton = "Actualizar nota";
 		$accion = "actualiza_nota(".$_POST[nota].")";
 	}
@@ -35,11 +35,11 @@
 	$cadena.="No hay notas";
 	else
 	{
-		while( true == ( $resultado = mysql_fetch_array( $consulta ) ) )
+		while( true == ( $dato = mysql_fetch_array( $consulta ) ) )
 		{
 			
-			$cadena.="&nbsp;&nbsp;<span class='fecha_nota'>".cambiaf($resultado[fecha])."&nbsp;&nbsp;&nbsp;&nbsp;<img src='imagenes/editar.png' alt='Editar Nota' onclick='editar_nota(".$resultado[0].")' /> &nbsp;|&nbsp;<img src='imagenes/borrar.png' alt='Borrar Nota' onclick='borra_nota(".$resultado[0].")' /></span>
-			&nbsp;&nbsp;<div class='texto_nota'>".$resultado[nota]."</div><br>";
+			$cadena.="&nbsp;&nbsp;<span class='fecha_nota'>".cambiaf($dato[fecha])."&nbsp;&nbsp;&nbsp;&nbsp;<img src='imagenes/editar.png' alt='Editar Nota' onclick='editar_nota(".$dato[0].")' /> &nbsp;|&nbsp;<img src='imagenes/borrar.png' alt='Borrar Nota' onclick='borra_nota(".$dato[0].")' /></span>
+			&nbsp;&nbsp;<div class='texto_nota'>".$dato[nota]."</div><br>";
 		}
 	}
 	

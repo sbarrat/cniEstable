@@ -34,13 +34,13 @@ if (isset($_GET['id'])) {
 
 $sql = "Select * from regfacturas where id like ".$_GET['id'];
 $consulta = mysql_query($sql,$con);
-$resultado = mysql_fetch_array($consulta);
+$dato = mysql_fetch_array($consulta);
 /* Analisis de las observaciones para fijar vencimiento*/
-$vto = strtok($resultado['obs_alt'],"VTO ");
+$vto = strtok($dato['obs_alt'],"VTO ");
 if(isset($vto[1])) {
 	$vencimiento = $vto;
 } else {
-	$vencimiento = cambiaf($resultado['fecha']);
+	$vencimiento = cambiaf($dato['fecha']);
 }
 ?>
 <html>
@@ -57,9 +57,9 @@ if(isset($vto[1])) {
 	<th align='left'>IMPORTE</th>
 </tr>
 <tr>
-	<td><? echo $resultado['codigo']; ?></td>
-	<td><? echo forma_pago($resultado['id_cliente']);?></td>
-	<td><? echo number_format($resultado['importe'],2,',','.'); ?></td>
+	<td><? echo $dato['codigo']; ?></td>
+	<td><? echo forma_pago($dato['id_cliente']);?></td>
+	<td><? echo number_format($dato['importe'],2,',','.'); ?></td>
 </tr>
 <tr>
 	<th align='left'>FECHA FACTURA</th>
@@ -67,7 +67,7 @@ if(isset($vto[1])) {
 	<th>&nbsp;</th>
 </tr>
 <tr>
-	<td><? echo cambiaf($resultado['fecha']); ?></td>
+	<td><? echo cambiaf($dato['fecha']); ?></td>
 	<td><? echo $vencimiento; ?></td>
 	<td>&nbsp;</td>
 </tr>
@@ -82,7 +82,7 @@ if(isset($vto[1])) {
 	<th align='left'>FIRMA</th>
 </tr>
 <tr>
-	<td colspan='2'><?php echo ficha_cliente( $resultado['id_cliente'] ); ?></td>
+	<td colspan='2'><?php echo ficha_cliente( $dato['id_cliente'] ); ?></td>
 	<td>&nbsp;</td>
 </tr>
 </table>

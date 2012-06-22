@@ -71,29 +71,29 @@ if(session_id() == $_GET[id]) {
 		<th align='center'>Subtotal</th>
 		<th align='center'>Iva</th>
 		<th align='center'>Total</th></tr>");
-		while(true == ($resultado = mysql_fetch_array($consulta))) {
+		while(true == ($dato = mysql_fetch_array($consulta))) {
 			if($_SESSION['metagrupado']==1)
 			    $fecha = "Agrupado";
 			else
-			    $fecha = cambiaf($resultado[2]);
-			$total = ((round($resultado[4],2) * $resultado[5])/100) + round($resultado[4],2);
+			    $fecha = cambiaf($dato[2]);
+			$total = ((round($dato[4],2) * $dato[5])/100) + round($dato[4],2);
 			$total = round($total,2);
 			$stotal = $stotal + $total;
-			$unitario = round($resultado[3],2);
-			$subtotal = round($resultado[4],2);
-			if($resultado[7]!='')
-			    $observa = "<div>".$resultado[7]."</div>";
+			$unitario = round($dato[3],2);
+			$subtotal = round($dato[4],2);
+			if($dato[7]!='')
+			    $observa = "<div>".$dato[7]."</div>";
 			else 
 			    $observa = "";
 			echo "<tr><td align='center' width='10%' valign='top'>".$fecha."</td>
-			<td align='left' width='40%' valign='top' class='texto'>".$resultado[0]." ".$observa."</td>
-			<td align='right' width='10%' valign='top'>".number_format($resultado[1],2,',','.')."</td>
+			<td align='left' width='40%' valign='top' class='texto'>".$dato[0]." ".$observa."</td>
+			<td align='right' width='10%' valign='top'>".number_format($dato[1],2,',','.')."</td>
 			<td align='right' width='10%' valign='top'>".number_format($unitario,2,',','.')." &euro;</td>
 			<td align='right' width='10%' valign='top'>".number_format($subtotal,2,',','.')." &euro;</td>
-			<td align='right' width='10%'valign='top'>".number_format($resultado[5],2,',','.')."</td>
+			<td align='right' width='10%'valign='top'>".number_format($dato[5],2,',','.')."</td>
 			<td align='right' width='10%'valign='top'>".number_format($total,2,',','.')." &euro;</td></tr>";
 			$servicios++;
-			$toserv = $toserv+$resultado[1];
+			$toserv = $toserv+$dato[1];
 		}
 		print("<tr>
 		<th>Totales</th>

@@ -20,7 +20,7 @@
  * @todo Revision de codigo y standard
  */
 require_once 'inc/variables.php';
-checkSession();
+Cni::checkSession();
 $mensaje = '';
 if ( isset($_GET['exit']) ) {
     $mensaje = "<span class='ok'>Sesión Cerrada</span>";
@@ -28,7 +28,6 @@ if ( isset($_GET['exit']) ) {
 if ( isset($_GET['error']) ) {
     $mensaje = "<span class='ko'>Usuario/Contraseña Incorrecta</span>";
 }
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -49,60 +48,68 @@ if ( isset($_GET['error']) ) {
 <?php
 if ( isset($_SESSION['usuario']) ) {
 	include_once 'inc/menu.php';
-	echo "<div id='menu_general'>";
-	echo menu();
-	echo "</div>";
 } else {
 ?>
 <div id='registro'>
-<center>
-	<img src='imagenes/logotipo2.png' width='538px' alt='The Perfect Place' />
-</center>
-<p />
-<center>
-<?php echo $mensaje; ?>
-	<form id='login_usuario' method='post' action='inc/valida.php'>
-	<table width='30%' class="login">
-  	<tr>
-  	<td align='right'>
-	Usuario:
-	</td><td>
-	<input type='text' id="usuario" name="usuario" 
-	    title='Introduzca su usuario' tabindex="1" />
-	</td></tr>
-	<tr>
-	<td align='right'>
-	Contraseña:
-	</td><td>
-	<input type='password' id="passwd" name="passwd" 
-	    title='Introduzca su contraseña' tabindex="2" />
-	</td></tr>
-	<tr>
-	<td align='center' colspan="2">
-	<input type='submit' class='boton' tabindex="3"  
-	title='Haga clic para entrar' value = '[->]Entrar' />
-	</td></tr>
-	<tr><td colspan='2'></td></tr>
-	</table>
-	</form>
-</center>
-<p />
-<center>
-  <p>
-  	<span class="etiqueta">Desarrollado por:</span>
-  </p>
-  <p>
-  	<a href='http://www.ensenalia.com'>
-  	    <img src='imagenes/ensenalia.jpg' width='128' /> 
-  	</a>
-  	<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/">
-  	<img alt="Licencia Creative Commons" style="border-width:0" 
-  	src="http://i.creativecommons.org/l/by-nc-nd/3.0/80x15.png" />
-  	</a>  
-  </p></center>
- </div>
+    <center>
+<!-- 	    <img src='imagenes/logotipo2.png' width='538px'  -->
+<!-- 	        alt='The Perfect Place' /> -->
+    </center>
+    <p />
+    <center>
+        <?php echo $mensaje; ?>
+	    <form id='login_usuario' method='post' action='inc/valida.php'>
+	        <table width='30%' class="login">
+  	            <tr>
+  	                <td align='right'>
+	                    Usuario:
+	                </td>
+	                <td>
+	                    <input type='text' id="usuario" name="usuario" 
+	                        title='Introduzca su usuario' tabindex="1" />
+	                </td>
+	            </tr>
+	            <tr>
+	                <td align='right'>
+	                    Contraseña:
+	                </td>
+	                <td>
+	                    <input type='password' id="passwd" name="passwd" 
+	                        title='Introduzca su contraseña' tabindex="2" />
+	                </td>
+	            </tr>
+	            <tr>
+	                <td align='center' colspan="2">
+	                    <input type='submit' class='boton' tabindex="3"  
+	                        title='Haga clic para entrar' 
+	                        value = '[->]Entrar' />
+	                </td>
+	            </tr>
+	            <tr>
+	                <td colspan='2'></td>
+	            </tr>
+	        </table>
+	    </form>
+    </center>
+    <p />
+    <center>
+        <p>
+  	        <span class="etiqueta">Desarrollado por:</span>
+        </p>
+        <p>
+  	        <a href='http://www.ensenalia.com'>
+  	            <img src='imagenes/ensenalia.jpg' width='128' /> 
+  	        </a>
+  	        <a rel="license" 
+  	            href="http://creativecommons.org/licenses/by-nc-nd/3.0/">
+  	            <img alt="Licencia Creative Commons" style="border-width:0" 
+  	            src="http://i.creativecommons.org/l/by-nc-nd/3.0/80x15.png" />
+  	        </a>  
+        </p>
+    </center>
+</div>
 <?php 
-} 
+} // Fin del formulario en la seccion de no registrado 
 ?>
 </div>
 <div id='datos_interesantes'></div>

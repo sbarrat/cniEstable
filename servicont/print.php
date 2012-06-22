@@ -41,23 +41,23 @@ if ( isset($_SESSION['titulo']) ) {
 				$cadena.= "<th>".mysql_field_name($consulta,$i)."</th>";
 		    }
 			$cadena.="</tr>";
-			while ( true == ( $resultado = mysql_fetch_array( $consulta ) ) ) {
+			while ( true == ( $dato = mysql_fetch_array( $consulta ) ) ) {
 				$clase = ( $j++ % 2 == 0) ? "par" : "impar";
 				$cadena."<tr>";
 				for ( $i = 0; $i < $totalCampos; $i++ ) {
 					switch ( mysql_field_type( $consulta, $i ) ) {
 						case "string":
-						    $campo = $resultado[$i];
+						    $campo = $dato[$i];
 						    break;
 						case "real":
-						    $campo = number_format($resultado[$i],2,',','.');
-							$tot[$i]=$tot[$i]+$resultado[$i];
+						    $campo = number_format($dato[$i],2,',','.');
+							$tot[$i]=$tot[$i]+$dato[$i];
 						    break;
 						case "date":
-						    $campo = cambiaf($resultado[$i]);
+						    $campo = cambiaf($dato[$i]);
 						    break;
 						default:
-						    $campo = $resultado[$i];
+						    $campo = $dato[$i];
 							$tot[$i] ="";
 					        break;
 					}

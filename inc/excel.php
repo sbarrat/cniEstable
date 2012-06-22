@@ -78,8 +78,8 @@ if(isset($_GET['tipo'])) {
 	}
 	$consulta = mysql_query($sql,$con);
 	$j=0;
-	while(true == ($resultado = mysql_fetch_array($consulta))) {
-		$cadena.="<tr><td>". ++$j." " .utf8_decode($resultado[1])."</td></tr>";
+	while(true == ($dato = mysql_fetch_array($consulta))) {
+		$cadena.="<tr><td>". ++$j." " .utf8_decode($dato[1])."</td></tr>";
 	}
 	$cadena.="</table>";	
 } else {
@@ -93,11 +93,11 @@ if(isset($_GET['tipo'])) {
 	style={border-style:solid;border-width:1px;}>";
 	$cadena .= "<tr><th>Codigo</th><th>Cliente</th><th>Categoria</th>
 	<th>Observaciones</th></tr>";
-	while (true == ($resultado = mysql_fetch_array($consulta))) {
-		$cadena .= "<tr><td>".$resultado[0]."</td>
-		<td>".utf8_decode($resultado[1])."</td>
-		<td>".utf8_decode($resultado[2])."</td>
-		<td>".utf8_decode($resultado[3])."</td></tr>";
+	while (true == ($dato = mysql_fetch_array($consulta))) {
+		$cadena .= "<tr><td>".$dato[0]."</td>
+		<td>".utf8_decode($dato[1])."</td>
+		<td>".utf8_decode($dato[2])."</td>
+		<td>".utf8_decode($dato[3])."</td></tr>";
 	}
 	$cadena .= "</table>";
 }

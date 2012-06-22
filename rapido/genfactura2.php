@@ -84,7 +84,7 @@ if(isset($_GET[cliente]))
 //nombre del cliente y del fichero
 	$sql = "Select * from clientes where id like '$cliente'";
 	$consulta = mysql_query($sql,$con);
-	$resultado = mysql_fetch_array($consulta);
+	$dato = mysql_fetch_array($consulta);
 	$nombre_fichero = "<span style='font-size:16.0pt'>Factura</span>";//.$resultado[1]." - ".$lista_meses[$mes]." - ". $ano_domini."</span>";
 //cabezera de word ya bien
 	header("Content-type:  application/msword");
@@ -110,27 +110,27 @@ $codigo_factura = genera_codigo_factura($cliente,$mes);
 	<th align='left' width='75%' style='border-style:solid;border-width:1px;border-color:#000000;'>
 	<table style='font-size:10.0pt'>
 	<tr>
-	<td>".strtoupper($resultado[1])."</td>
+	<td>".strtoupper($dato[1])."</td>
 	</tr><tr>
-	<td>".$resultado[6]."</td>
+	<td>".$dato[6]."</td>
 	</tr><tr>
-	<td>".$resultado[7]."&nbsp;&nbsp;-&nbsp;&nbsp;".$resultado[8]."</td>
+	<td>".$dato[7]."&nbsp;&nbsp;-&nbsp;&nbsp;".$dato[8]."</td>
 	</tr><tr>
-	<td>NIF:".$resultado[5]."</td>
+	<td>NIF:".$dato[5]."</td>
 	</tr></table>
 	</th>
 	</tr>";
 //<tr><th align='left'>Contrato</th><td colspan='5' align='left'>".$resultado[3] ."</td></tr>";
 //formas de pago y + datos de facturacion
 	$sql = "SELECT * from facturacion where idemp like $cliente";
-	if ( true == ( $resultado = mysql_fetch_array( $consulta ) ) )
+	if ( true == ( $dato = mysql_fetch_array( $consulta ) ) )
 	{
-		$resultado = mysql_fetch_array($consulta);
+		$dato = mysql_fetch_array($consulta);
 		$pie_factura = "<table width='100%' cellpadding='1px' cellspacing='1px' style='font-size:10.0pt'>
 		<tr>
-		<th align='left' >Forma de pago: ".$resultado[fpago]."</th>
+		<th align='left' >Forma de pago: ".$dato[fpago]."</th>
 		</tr><tr>
-		<th align='left' >N&deg; Cuenta: ".$resultado[cc]."</th>
+		<th align='left' >N&deg; Cuenta: ".$dato[cc]."</th>
 		</tr></table>";
 	/*	<tr>
 		<th align='left' >Supervisa Factura: ".$resultado[sfactura]."</th>
@@ -157,62 +157,62 @@ $codigo_factura = genera_codigo_factura($cliente,$mes);
 //la primera linea tiene que ser el importe del mes del tipo de cliente
 	$sql = "Select * from tarifa_cliente where ID_Cliente like $cliente";
 	$consulta = mysql_query($sql,$con);
-	while ( true == ( $resultado = mysql_fetch_array( $consulta ) ) )
+	while ( true == ( $dato = mysql_fetch_array( $consulta ) ) )
 	{
 		echo "<tr>
 		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>Mensual</td>
-		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' >".codifica($resultado[2])." ".codifica($resultado[6])."</td>
+		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' >".codifica($dato[2])." ".codifica($dato[6])."</td>
 		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>1</td>
-		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>".$resultado[4]."&euro;</td>
-		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>".$resultado[4]."&euro;</td>
-		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>".$resultado[5]."%</td>
-		<td align='center'>".iva($resultado[4],$resultado[5])."&euro;</td></tr>";
-		$total = $total + iva($resultado[4],$resultado[5]);
-		$bruto = $bruto + $resultado[4];
+		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>".$dato[4]."&euro;</td>
+		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>".$dato[4]."&euro;</td>
+		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>".$dato[5]."%</td>
+		<td align='center'>".iva($dato[4],$dato[5])."&euro;</td></tr>";
+		$total = $total + iva($dato[4],$dato[5]);
+		$bruto = $bruto + $dato[4];
 	}
 //Hasta aqui el importe del contrato base
 //almacenaje
 	$sql = "Select bultos, datediff(fin,inicio) from z_almacen where cliente like $cliente and month(fin) like $mes";
 	$consulta = mysql_query($sql,$con);
-	while ( true == ( $resultado = mysql_fetch_array( $consulta ) ) )
+	while ( true == ( $dato = mysql_fetch_array( $consulta ) ) )
 	{
-		$almacen_con_iva = round($resultado[1]*1.16,2);
+		$almacen_con_iva = round($dato[1]*1.16,2);
 		$total = $almacen_con_iva + $total;
 		echo "<tr>
 		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>".$lista_meses[$mes]."</td>
 		<td style='border-right-style:solid; border-width:1px;border-color:#000000;'>Almacenaje</td>
-		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>".$resultado[0]."</td>
+		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>".$dato[0]."</td>
 		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>0,68&euro;</td>
-		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>".$resultado[1]."&euro;</td>
+		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>".$dato[1]."&euro;</td>
 		<td style='border-right-style:solid; border-width:1px;border-color:#000000;' align='center'>16%</td>
 		<td align='center'>".$almacen_con_iva."&euro;</td></tr>";
-		$cantidad = $resultado[0] + $cantidad;
-		$bruto = $bruto + $resultado[1];
+		$cantidad = $dato[0] + $cantidad;
+		$bruto = $bruto + $dato[1];
 	}
 //fin del almacenaje
 //FIN DE ESTA PARTE
 //Servicio contratado
 	$sql = "Select d.Servicio, sum(d.Cantidad), date_format(c.fecha,'%d-%m-%Y') as fecha, sum(d.PrecioUnidadEuros), sum(d.ImporteEuro), d.iva, c.`Id Pedido` ,d.observaciones from `detalles consumo de servicios` as d join `consumo de servicios` as c on c.`Id Pedido` = d.`Id Pedido` where c.Cliente like $cliente and (date_format(curdate(),'%Y') like date_format(c.fecha,'%Y') and '$mes' like date_format(c.fecha,'%c')) group by d.servicio";
 	$consulta = mysql_query($sql,$con);
-	while ( true == ( $resultado = mysql_fetch_array( $consulta ) ) )
+	while ( true == ( $dato = mysql_fetch_array( $consulta ) ) )
 	{
 		//$subtotal = round(round($resultado[4],2)+(round($resultado[4],2)*$resultado[5])/100,2);
 		//$subtotal = round($resultado[4] + ($resultado[4]*$resultado[5])/100,2);
-		$subtotal = $resultado[4] + ($resultado[4]*$resultado[5])/100;
+		$subtotal = $dato[4] + ($dato[4]*$dato[5])/100;
 //acumulados
 		$total = $subtotal + $total;
-		$cantidad = $resultado[1] + $cantidad;
+		$cantidad = $dato[1] + $cantidad;
 //fin acumulados
 		echo "<tr>
 		<td style='border-right-style:solid; border-width:1px;border-color:#000000;'align='center'>".dame_el_mes($mes)."/".date(Y)."</td>
-		<td style='border-right-style:solid; border-width:1px;border-color:#000000;'>".$resultado[0]." ".$resultado[7]."</td>
-		<td style='border-right-style:solid; border-width:1px;border-color:#000000;'align='center'>".round($resultado[1],2)."</td>
-		<td style='border-right-style:solid; border-width:1px;border-color:#000000;'align='center'>".round($resultado[3],2)."&euro;</td>
-		<td style='border-right-style:solid; border-width:1px;border-color:#000000;'align='center'>".round($resultado[4],2)."&euro;</td>
-		<td style='border-right-style:solid; border-width:1px;border-color:#000000;'align='center'>".$resultado[5]."%</td>
+		<td style='border-right-style:solid; border-width:1px;border-color:#000000;'>".$dato[0]." ".$dato[7]."</td>
+		<td style='border-right-style:solid; border-width:1px;border-color:#000000;'align='center'>".round($dato[1],2)."</td>
+		<td style='border-right-style:solid; border-width:1px;border-color:#000000;'align='center'>".round($dato[3],2)."&euro;</td>
+		<td style='border-right-style:solid; border-width:1px;border-color:#000000;'align='center'>".round($dato[4],2)."&euro;</td>
+		<td style='border-right-style:solid; border-width:1px;border-color:#000000;'align='center'>".$dato[5]."%</td>
 		<td align='center'>".round($subtotal,2)."&euro;</td></tr>";
 		//$bruto = $bruto + round($resultado[4],2);
-		$bruto = $bruto + $resultado[4];
+		$bruto = $bruto + $dato[4];
 	}
 	echo "<tr>
 	<th style='border-top-style:solid; border-width:1px;border-color:#000000;'align='center'>&nbsp;</th>

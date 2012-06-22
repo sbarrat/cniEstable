@@ -9,11 +9,11 @@
 	$consulta = @mysql_query($sql,$con);
 	$despachos=array();
 	$clase=array();
-	while( true == ( $resultado = mysql_fetch_array( $consulta ) ) )
+	while( true == ( $dato = mysql_fetch_array( $consulta ) ) )
 	{
-		 $despachos[intval($resultado[0])]=$resultado[1];
-		 $clase[intval($resultado[0])]="despacho_ocupado";
-		 $cliente[intval($resultado[0])]=$resultado[2];
+		 $despachos[intval($dato[0])]=$dato[1];
+		 $clase[intval($dato[0])]="despacho_ocupado";
+		 $cliente[intval($dato[0])]=$dato[2];
 	}
 	for($i=0;$i<=5;$i++)
 	{

@@ -20,6 +20,7 @@
  * Funciones estaticas generales de toda la aplicacion
  *
  */
+require_once 'CniDB.php';
 final class Cni
 {
     /**
@@ -62,6 +63,7 @@ final class Cni
     }
     /**
      * Devuelve la clase a usar dependiendo del numero pasado
+     * 
      * @param integer $k
      * @return string
      */
@@ -69,5 +71,34 @@ final class Cni
     {
         return ( $k%2 == 0 ) ? 'par' : 'impar';
     }
-    
+    /**
+     * Ejecuta la consulta y devuelve los resultados
+     * 
+     * @param string $sql
+     * @param integer $type PDO::FETCH_BOTH, PDO::FETCH_ASSOC
+     * @return resource
+     */
+    public static function consulta( $sql, $type = PDO::FETCH_BOTH )
+    {
+        $con = CniDB::connect();
+        return $con->query($sql, $type);
+    }
+    /**
+     * Sanea las variables
+     * 
+     * @param multitype:string|array $vars
+     * @param integer $type - INPUT_POST, INPUT_GET
+     * @return mixed:string|array
+     */
+    public static function  sanitize( $vars, $type = INPUT_POST ) 
+    {
+        if ( is_array($vars) ) {
+            foreach ( $vars as $key => $var ) {
+                $newVar[$key] = filter_input($type, $key);
+            }
+        } else {
+            $newVar = filter_input($type, $vars);
+        }
+        return $newVar;
+    }
 }

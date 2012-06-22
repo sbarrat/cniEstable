@@ -1,30 +1,30 @@
 <?php
 /**
- * Valida File Doc Comment
+ * valida File Doc Comment
  *
- * Fichero encargado de la validacion de usuarios
+ * Valida al usuario
+ *
+ * Se encarga de validar al usuario
  *
  * PHP Version 5.2.6
  *
- * @category Valida
- * @package  cni/inc
- * @author   Ruben Lacasa Mas <ruben@ensenalia.com>
- * @license  http://creativecommons.org/licenses/by-nc-nd/3.0/
- * 			 Creative Commons Reconocimiento-NoComercial-SinObraDerivada 3.0 Unported
- * @link     https://github.com/independenciacn/cni
- * @version  2.0e Estable
+ * @author  Ruben Lacasa <ruben@ensenalia.com>
+ * @package cniEstable/inc
+ * @license Creative Commons Atribución-NoComercial-SinDerivadas 3.0 Unported
+ * @version 2.0e Estable
+ * @link    https://github.com/sbarrat/cniEstable
  */
 require_once 'variables.php';
-checkSession();
-sanitize($_POST);
-if ( isset( $_POST['usuario'] ) && isset( $_POST['passwd']) ){
+Cni::checkSession();
+if ( isset( $_POST['usuario'] ) && isset( $_POST['passwd']) ) {
+    $vars = Cni::sanitize($_POST);
     $sql = "SELECT 1 from usuarios
-    WHERE nick like '".$_POST['usuario']."' 
-    AND contra like sha1('".$_POST['passwd']."')";
-    $consulta = mysql_query( $sql, $con );
-    if ( mysql_num_rows($consulta) == 1 ) {
-        // TODO OK
-        $_SESSION['usuario'] = $_POST['usuario'];
+    WHERE nick like '".$vars['usuario']."' 
+    AND contra like sha1('".$vars['passwd']."')";
+    $resultados = Cni::consulta($sql);
+    if ( count($resultados) == 1 ) {
+        // OK
+        $_SESSION['usuario'] = $vars['usuario'];
         header("Location:../index.php");
         exit(0);
     } else {

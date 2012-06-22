@@ -4,18 +4,18 @@ if (isset($_POST[tarea]))
 {
 	$sql = "Select * from tareas_pendientes where id like $_POST[tarea]";
 	$consulta = @mysql_query($sql,$con);
-	$resultado = @mysql_fetch_array($consulta);
-	$accion="actualiza_tarea_pendiente($resultado[id])";		
+	$dato = @mysql_fetch_array($consulta);
+	$accion="actualiza_tarea_pendiente($dato[id])";		
 }
 else
 {
-	$resultado = array();
+	$dato = array();
 	$accion="agregar_tarea_pendiente()";	
 } 
 ?>
 <form id='tareas_pendientes' name='tareas_pendientes' method='post' action='' onsubmit='<? echo $accion; ?>;return false' >
-<label>Tarea:</label><br/><textarea name='nombre' cols='50' rows='6'><? echo $resultado[nombre]; ?></textarea>
-<p/><label>Vencimiento:</label><input type='text' name='vencimiento' id='semana' size='10' value='<? echo cambiaf($resultado[vencimiento]); ?>' />
+<label>Tarea:</label><br/><textarea name='nombre' cols='50' rows='6'><? echo $dato[nombre]; ?></textarea>
+<p/><label>Vencimiento:</label><input type='text' name='vencimiento' id='semana' size='10' value='<? echo cambiaf($dato[vencimiento]); ?>' />
 <button type='button' class='boton' id='f_trigger_semana' >...</button>
 <label>Asignada a:</label>
 <select name='asignada'>
@@ -26,7 +26,7 @@ $seleccion_asignada="<option value='0'>-No Asignada-</option>";
 	$consulta2 = mysql_query($sql2,$con);
 	while(true == ($resultado2 = @mysql_fetch_array($consulta2)))
 	{	
-		if($resultado[asignada]==$resultado2[0])
+		if($dato[asignada]==$resultado2[0])
 			$check_as = "selected";
 		else
 			$check_as = "";
@@ -37,13 +37,13 @@ echo $seleccion_asignada;
 </select>
 <label>Prioridad:</label>
 <select name='prioridad'>
-	<option <?php if ($resultado[prioridad]==0) echo "selected"; ?> value='0'>Normal</option>
-	<option <?php if ($resultado[prioridad]==1) echo "selected"; ?> value='1'>Media</option>
-	<option <?php if ($resultado[prioridad]==2) echo "selected"; ?> value='2'>Alta</option>
-	<option <?php if ($resultado[prioridad]==3) echo "selected"; ?> value='3'>Urgente</option>
+	<option <?php if ($dato[prioridad]==0) echo "selected"; ?> value='0'>Normal</option>
+	<option <?php if ($dato[prioridad]==1) echo "selected"; ?> value='1'>Media</option>
+	<option <?php if ($dato[prioridad]==2) echo "selected"; ?> value='2'>Alta</option>
+	<option <?php if ($dato[prioridad]==3) echo "selected"; ?> value='3'>Urgente</option>
 </select>
 <?php 
-if(isset($resultado[id]))
+if(isset($dato[id]))
 	echo "<input type='submit' value='Actualizar Tarea' /><input type='button' value='Limpiar' onclick='cambia_vista()'/>";
 else 
 	echo "<input type='submit' value='Agregar Tarea' />";
@@ -76,8 +76,8 @@ $sql = "SELECT vencimiento
 FROM `tareas_pendientes`
 GROUP BY vencimiento";
 $consulta = @mysql_query($sql,$con);
-while( true == ( $resultado = mysql_fetch_array( $consulta ) ) )
-$fechas[]=$resultado[0];
+while( true == ( $dato = mysql_fetch_array( $consulta ) ) )
+$fechas[]=$dato[0];
 /*Fin*/
 for($j=0;$j<=1;$j++)
 {
@@ -100,18 +100,18 @@ for($j=0;$j<=1;$j++)
 	if(@mysql_numrows($consulta)!=0)
 	{
 		$i = 0;
-		while( true == ( $resultado = mysql_fetch_array( $consulta ) ) )
+		while( true == ( $dato = mysql_fetch_array( $consulta ) ) )
 		{
 			$clase = ( $i++ % 2) ? "lista_par" : "lista_impar";
 		/*
  		 * Colores de las prioridades
  		 */	
-		if($resultado[realizada]=="Si")
+		if($dato[realizada]=="Si")
 			$realizada = "checked";
 		else
 			$realizada = "";
 		$color_tarea = array("normal","media","alta","muy_alta");
-		$texto.="<div class='".$clase."'><span class='fecha_tarea'>".cambiaf($resultado[vencimiento])."</span>&nbsp;&nbsp;<span class='prioridad_".$color_tarea[$resultado[prioridad]]."'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;".nombre_emp($resultado[asignada])."&nbsp;&nbsp;<a href='javascript:edita_tarea_pendiente(".$resultado[0].")'>".$resultado[nombre]."</a>&nbsp;&nbsp;&nbsp;&nbsp;<span align='right'><input type='checkbox' id='tarea_".$resultado[0]."' onchange='cambia_estado_tarea(".$resultado[0].")' ".$realizada." />&nbsp;|&nbsp;<img src='imagenes/borrar.png' alt='Borrar Tarea' onclick='borra_tarea(".$resultado[0].")' /></span></div>";
+		$texto.="<div class='".$clase."'><span class='fecha_tarea'>".cambiaf($dato[vencimiento])."</span>&nbsp;&nbsp;<span class='prioridad_".$color_tarea[$dato[prioridad]]."'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;".nombre_emp($dato[asignada])."&nbsp;&nbsp;<a href='javascript:edita_tarea_pendiente(".$dato[0].")'>".$dato[nombre]."</a>&nbsp;&nbsp;&nbsp;&nbsp;<span align='right'><input type='checkbox' id='tarea_".$dato[0]."' onchange='cambia_estado_tarea(".$dato[0].")' ".$realizada." />&nbsp;|&nbsp;<img src='imagenes/borrar.png' alt='Borrar Tarea' onclick='borra_tarea(".$dato[0].")' /></span></div>";
 		}
 	}
 	else

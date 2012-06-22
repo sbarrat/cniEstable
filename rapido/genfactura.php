@@ -427,17 +427,17 @@ if( isset( $_GET['factura'] ) || isset( $_GET['duplicado'] ) ) {
 		$datos = "Select * from regfacturas where id like " . $_GET['duplicado'];
 	}
 	$consulta = mysql_query( $datos, $con);
-	$resultado = mysql_fetch_array( $consulta ); // resultado de la consulta
-	$cliente = $resultado['id_cliente'];
-	$fecha_factura = cambiaf( $resultado['fecha'] );
+	$dato = mysql_fetch_array( $consulta ); // resultado de la consulta
+	$cliente = $dato['id_cliente'];
+	$fecha_factura = cambiaf( $dato['fecha'] );
 	$ano_factura = explode( "-", $fecha_factura );
-	$mes = intval( $resultado['mes'] );
-	$codigo = $resultado['codigo'];
+	$mes = intval( $dato['mes'] );
+	$codigo = $dato['codigo'];
 	$historico = historico($codigo); // devuelve ok o ko
-	$fecha_inicial_factura = $resultado['fecha_inicial'];
-	$fecha_final_factura = $resultado['fecha_final'];
-	$observaciones = $resultado['obs_alt'];
-	$pedidoCliente = $resultado['pedidoCliente'];
+	$fecha_inicial_factura = $dato['fecha_inicial'];
+	$fecha_final_factura = $dato['fecha_final'];
+	$observaciones = $dato['obs_alt'];
+	$pedidoCliente = $dato['pedidoCliente'];
 	// Si establecemos que la factura es duplicado
 	if( isset( $_GET['duplicado'] ) ) {
 		$fichero = "FACTURA (DUPLICADO)";
@@ -498,18 +498,18 @@ $tituloPagina = ( $inicio!= "0000-00-00") ? "ocupacion puntual" : dame_el_mes( "
 if($historico == "ok") {
 	$sql = "Select * from historico where factura like ".$codigo;
 	$consulta = mysql_query($sql,$con);
-	while ( true == ($resultado = mysql_fetch_array($consulta))) {
-		$importe_sin_iva = $resultado['cantidad']*$resultado['unitario'];
+	while ( true == ($dato = mysql_fetch_array($consulta))) {
+		$importe_sin_iva = $dato['cantidad']*$dato['unitario'];
 		echo "<tr>
-		<td><p class='texto'>".ucfirst($resultado[2])." ".ucfirst($resultado[6])."</td>
-		<td align='right'>".number_format($resultado['cantidad'],2,',','.')."&nbsp;</td>
-		<td align='right'>".number_format($resultado['unitario'],2,',','.')."&euro;&nbsp;</td>
+		<td><p class='texto'>".ucfirst($dato[2])." ".ucfirst($dato[6])."</td>
+		<td align='right'>".number_format($dato['cantidad'],2,',','.')."&nbsp;</td>
+		<td align='right'>".number_format($dato['unitario'],2,',','.')."&euro;&nbsp;</td>
 		<td align='right'>".number_format($importe_sin_iva,2,',','.')."&euro;&nbsp;</td>
-		<td align='right'>".$resultado['iva']."%&nbsp;</td>
+		<td align='right'>".$dato['iva']."%&nbsp;</td>
 		<td align='right'>".
-			number_format(iva($importe_sin_iva,$resultado['iva']),2,',','.')."&euro;&nbsp;
+			number_format(iva($importe_sin_iva,$dato['iva']),2,',','.')."&euro;&nbsp;
 		</td></tr>";
-		$total = $total + iva($importe_sin_iva,$resultado[5]);
+		$total = $total + iva($importe_sin_iva,$dato[5]);
 		$bruto = $bruto + $importe_sin_iva;
 		$celdas++;
 		$cantidad++;
@@ -530,31 +530,31 @@ if($historico == "ok") {
 		 * @var float $importeServiciosFijos
 		 */
 		$importeServiciosFijos = 0;
-		while ( true == ($resultado = mysql_fetch_array($consulta))) {
-			$importe_sin_iva = $resultado[7]*$resultado[4];
+		while ( true == ($dato = mysql_fetch_array($consulta))) {
+			$importe_sin_iva = $dato[7]*$dato[4];
 			$importeServiciosFijos += $importe_sin_iva; 
 			echo "<tr>
 			<td>
-			<p class='texto'>".ucfirst($resultado[2])." ".ucfirst($resultado[6])."</p>
+			<p class='texto'>".ucfirst($dato[2])." ".ucfirst($dato[6])."</p>
 			</td>
-			<td align='right'>".number_format($resultado[7],2,',','.')."&nbsp;</td>
-			<td align='right'>".number_format($resultado[4],2,',','.')."&euro;&nbsp;</td>
+			<td align='right'>".number_format($dato[7],2,',','.')."&nbsp;</td>
+			<td align='right'>".number_format($dato[4],2,',','.')."&euro;&nbsp;</td>
 			<td align='right'>".number_format($importe_sin_iva,2,',','.')."&euro;&nbsp;</td>
-			<td align='right'>".$resultado[5]."%&nbsp;</td>
+			<td align='right'>".$dato[5]."%&nbsp;</td>
 			<td align='right'>".
-				number_format(iva($importe_sin_iva,$resultado[5]),2,',','.')."&euro;&nbsp;
+				number_format(iva($importe_sin_iva,$dato[5]),2,',','.')."&euro;&nbsp;
 			</td></tr>";
-			$total = $total + iva($importe_sin_iva,$resultado[5]);
+			$total = $total + iva($importe_sin_iva,$dato[5]);
 			
 			$bruto = $bruto + $importe_sin_iva;
 			$celdas++;
 			$cantidad++;
 			/*ALERTA LINEA A MODIFICAR EN EL CAMBIO*/
-			$servicio_desc = ucfirst($resultado[2]);//." ".ucfirst(codifica($resultado[6]));
+			$servicio_desc = ucfirst($dato[2]);//." ".ucfirst(codifica($resultado[6]));
 			if(($historico == "ko")&& (!isset($_GET['prueba']))) {
 			//Agregamos al historico
-				agrega_historico($codigo,$servicio_desc,$resultado[7],
-						$resultado[4],$resultado[5],ucfirst($resultado[6]));
+				agrega_historico($codigo,$servicio_desc,$dato[7],
+						$dato[4],$dato[5],ucfirst($dato[6]));
 			}
 		}
 	}
@@ -579,25 +579,25 @@ if($historico == "ok") {
 	//echo $sql;/*PUNTO DE CONTROL*/
 	
 	$consulta = mysql_query($sql,$con);
-	while (true == ($resultado = mysql_fetch_array($consulta))) {
-		$dias_almacen = $resultado[1];
-		$subtotala = $resultado[0]*$dias_almacen*$par_almacenaje['PrecioEuro'];
+	while (true == ($dato = mysql_fetch_array($consulta))) {
+		$dias_almacen = $dato[1];
+		$subtotala = $dato[0]*$dias_almacen*$par_almacenaje['PrecioEuro'];
         $totala = iva($subtotala,$par_almacenaje['iva']);
 		echo "<tr>
 		<td ><p class='texto'>Bultos Almacenados del  ".
-		cambiaf($resultado[2])." al ".cambiaf($resultado[3])."</p></td>
-		<td align='right'>".number_format($resultado[0],2,',','.')."&nbsp;</td>
+		cambiaf($dato[2])." al ".cambiaf($dato[3])."</p></td>
+		<td align='right'>".number_format($dato[0],2,',','.')."&nbsp;</td>
 		<td align='right'>0,70&euro;&nbsp;</td>
 		<td align='right'>".number_format($subtotala,2,',','.')."&euro;&nbsp;</td>
 		<td align='right'>".$par_almacenaje['iva']."%&nbsp;</td>
 		<td align='right'>".number_format($totala,2,',','.')."&euro;&nbsp;</td></tr>";
-		$cantidad = $resultado[0] + $cantidad;
+		$cantidad = $dato[0] + $cantidad;
 		$bruto = $bruto + $subtotala;
 		$total = $totala + $total;
 		$celdas++;
-		$cadena_texto = " del  ".cambiaf($resultado[2])." al ".cambiaf($resultado[3]);
+		$cadena_texto = " del  ".cambiaf($dato[2])." al ".cambiaf($dato[3]);
 		if(($historico == "ko")&& (!isset($_GET['prueba']))) { //Agregamos al historico
-			agrega_historico($codigo,"Bultos Almacenados",$resultado[0],
+			agrega_historico($codigo,"Bultos Almacenados",$dato[0],
 					$subtotala,$par_almacenaje['iva'],$cadena_texto);
 		}
 	}
@@ -615,25 +615,25 @@ if($historico == "ok") {
 	$sql .= consulta_no_agrupado($cliente);
 	//echo $sql;/*PUNTO DE CONTROL*/
 	$consulta = mysql_query($sql,$con);
-	while (true == ($resultado=mysql_fetch_array($consulta))) {
-		$subtotal = $resultado[4] + ($resultado[4]*$resultado[5])/100;
+	while (true == ($dato=mysql_fetch_array($consulta))) {
+		$subtotal = $dato[4] + ($dato[4]*$dato[5])/100;
 //acumulados
 		$total = $subtotal + $total;
-		$cantidad = $resultado[1] + $cantidad;
+		$cantidad = $dato[1] + $cantidad;
 //fin acumulados
 		echo "<tr>
-		<td ><p class='texto'>".ucfirst($resultado[0])." 
-		".ucfirst($resultado[7])."</p></td>
-		<td align='right'>".number_format($resultado[1],2,',','.')."&nbsp;</td>
-		<td align='right'>".number_format($resultado[3],2,',','.')."&euro;&nbsp;</td>
-		<td align='right'>".number_format($resultado[4],2,',','.')."&euro;&nbsp;</td>
-		<td align='right'>".$resultado[5]."%&nbsp;</td>
+		<td ><p class='texto'>".ucfirst($dato[0])." 
+		".ucfirst($dato[7])."</p></td>
+		<td align='right'>".number_format($dato[1],2,',','.')."&nbsp;</td>
+		<td align='right'>".number_format($dato[3],2,',','.')."&euro;&nbsp;</td>
+		<td align='right'>".number_format($dato[4],2,',','.')."&euro;&nbsp;</td>
+		<td align='right'>".$dato[5]."%&nbsp;</td>
 		<td align='right'>".number_format($subtotal,2,',','.')."&euro;&nbsp;</td></tr>";
-		$bruto = $bruto + $resultado[4];
+		$bruto = $bruto + $dato[4];
 		$celdas++;
 		//$servicio_desc = ucfirst($resultado[0])." ".codifica(ucfirst($resultado[7]));
 		if(($historico == "ko")&& (!isset($_GET['prueba']))) { //Agregamos al historico
-			agrega_historico($codigo,$resultado[0],$resultado[1],$resultado[3],$resultado[5],$resultado[7]);
+			agrega_historico($codigo,$dato[0],$dato[1],$dato[3],$dato[5],$dato[7]);
 		}
 	}
 //#####################################Parte agrupada###############################################
@@ -646,26 +646,26 @@ if($historico == "ok") {
 	//echo $sql;//<- Punto de Control
 	//echo $cliente.",".$mes.",".$inicio.",".$final;
 	$consulta = mysql_query($sql,$con);
-	while ( true == ($resultado=mysql_fetch_array($consulta))) {
-		$subtotal = $resultado[4]+ ($resultado[4]*$resultado[5])/100;
+	while ( true == ($dato=mysql_fetch_array($consulta))) {
+		$subtotal = $dato[4]+ ($dato[4]*$dato[5])/100;
 //acumulados
 		$total = $subtotal + $total;
-		$cantidad = $resultado[1] + $cantidad;
+		$cantidad = $dato[1] + $cantidad;
 //fin acumulados
 		echo "<tr>
-		<td ><p class='texto'>".ucfirst($resultado[0])." 
-		".ucfirst($resultado[7])."</p></td>
-		<td align='right'>".number_format($resultado[1],2,',','.')."&nbsp;</td>
-		<td align='right'>".number_format($resultado[3],2,',','.')."&euro;&nbsp;</td>
-		<td align='right'>".number_format($resultado[4],2,',','.')."&euro;&nbsp;</td>
-		<td align='right'>".$resultado[5]."%&nbsp;</td>
+		<td ><p class='texto'>".ucfirst($dato[0])." 
+		".ucfirst($dato[7])."</p></td>
+		<td align='right'>".number_format($dato[1],2,',','.')."&nbsp;</td>
+		<td align='right'>".number_format($dato[3],2,',','.')."&euro;&nbsp;</td>
+		<td align='right'>".number_format($dato[4],2,',','.')."&euro;&nbsp;</td>
+		<td align='right'>".$dato[5]."%&nbsp;</td>
 		<td align='right'>".number_format($subtotal,2,',','.')."&euro;&nbsp;</td></tr>";
-		$bruto = $bruto + $resultado[4];
+		$bruto = $bruto + $dato[4];
 		$celdas++;
 		//$servicio_desc = ucfirst($resultado[0])." ".codifica(ucfirst($resultado[7]));
 		if(($historico == "ko")&& (!isset($_GET['prueba']))) { //Agregamos al historico
-			agrega_historico($codigo,ucfirst($resultado[0]),$resultado[1],
-					$resultado[3],$resultado[5],ucfirst($resultado[7]));
+			agrega_historico($codigo,ucfirst($dato[0]),$dato[1],
+					$dato[3],$dato[5],ucfirst($dato[7]));
 		}
 	}
 //descuento si procede
@@ -675,9 +675,9 @@ if($historico == "ok") {
  */
 		$esql = "Select razon from clientes where id like ".$cliente;
 		$consulta = mysql_query($esql,$con);
-		$resultado = mysql_fetch_array($consulta);
-		if(($resultado[0] != "") && ($resultado[0] != "")) {
-			$porcentaje = explode("%",$resultado[0]); // Porcentaje del descuento
+		$dato = mysql_fetch_array($consulta);
+		if(($dato[0] != "") && ($dato[0] != "")) {
+			$porcentaje = explode("%",$dato[0]); // Porcentaje del descuento
 			$descuento = ($importeServiciosFijos * $porcentaje[0])/100;// @FIXME calculo en base al total de servicios fijos
 			$descuento_con_iva = $descuento * 1.18; 
 			echo "<tr>
