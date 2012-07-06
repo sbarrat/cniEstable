@@ -2,37 +2,76 @@
 /**
  * Avisos File Doc Comment
  *
- * Muestra el cartel de avisos
+ * Avisos en Pantalla
+ *
+ * Menu general de la aplicacion, enlaces a los distintos apartados del 
+ * programa
  *
  * PHP Version 5.2.6
  *
- * @category Avisos
- * @package  cni/inc
- * @author   Ruben Lacasa Mas <ruben@ensenalia.com>
- * @license  http://creativecommons.org/licenses/by-nc-nd/3.0/
- * 			 Creative Commons Reconocimiento-NoComercial-SinObraDerivada 3.0 Unported
- * @link     https://github.com/independenciacn/cni
- * @version  2.0e Estable
+ * @author  Ruben Lacasa <ruben@ensenalia.com>
+ * @package cniEstable/inc
+ * @license Creative Commons Atribución-NoComercial-SinDerivadas 3.0 Unported
+ * @version 2.0e Estable
+ * @link    https://github.com/sbarrat/cniEstable
  */
 require_once 'variables.php';
-checkSession();
+require_once 'Avisos.php';
+Cni::checkSession();
 if ( isset($_POST ) ) {
-    sanitize($_POST);
+    Cni::sanitize($_POST, INPUT_POST);
 }
-$cadena = "";
-if(isset($_SESSION['usuario']))
-{
-	if ( isset($_POST['opcion'] ) ) {
-        switch($_POST['opcion'])
-	    {
-		    case 0:$cadena = avisos();break;
-		    case 1:$cadena = telefonos();break;
-		    default:$cadena= avisos();break;
+$html = "";
+if ( isset($_SESSION['usuario']) ) {
+	if ( isset($_POST['opcion']) ) {
+	    if ( $_POST['opcion'] == 1 ) {
+	        //TODO Seccion de telefonos - Ver cuando se lanza
+	    } else {
+	        // TODO Cargamos los avisos
+	        $avisos = new Avisos();
+	        $nadieCumple = true;
+	        $k = 0;
+	        $html = "<input type='button' class='boton' 
+	            value='[<]Ocultar Avisos'
+	            onclick='cerrar_avisos()' />
+	            <table class='tabla'>
+	            <tr><th colspan='2'>Cartel de Avisos</th></tr>
+	            <tr><th>Cumpleaños</th><th>Contratos</th></tr>";
+	        $html .= "<tr><td valign='top'>
+	            <table width='100%'>
+	            <tr><th colspan='2'>Hoy es el cumpleaños de</th></tr>";
+	        // Cumpleaños Hoy
+	        $resultados = $avisos->cumples('today');
+	        if ( count($resultados) > 0 ) {
+	            $nadieCumple = false;
+	            foreach ( $resultados as $resultado ) {
+	                $html .= "<tr>
+	                    <td class='".CNI::clase($k++)."' colspan='2'>".
+	                    $resultado[1]." de 
+	                    <a href='javascript:muestra($resultado[3])'>"
+	                    .$resultado[0]."</a>
+	                    </td></tr>";
+	            }    
+	        }
+	        $html .= "<tr><td valign='top'>
+	            <table width='100%'>
+	            <tr><th colspan='2'>Mañana es el cumpleaños de</th></tr>";
+	        // Cumpleaños Mañana
+	        $resultados = $avisos->cumples('tomorrow');
+	        if ( count($resultados) > 0 ) {
+	            $nadieCumple = false;
+	            foreach ( $resultados as $resultado ) {
+	                $html .= "<tr>
+	                    <td class='".CNI::clase($k++)."' colspan='2'>".
+	        	                    $resultado[1]." de
+	        	                    <a href='javascript:muestra($resultado[3])'>"
+	        	                    .$resultado[0]."</a>
+	                    </td></tr>";
+	            }
+	        }
+	        
 	    }
-	} else {
-	    $cadena = avisos();
-	}
-echo $cadena;
+    }
 }
 /**
  * Funcion que muestra los avisos
@@ -41,37 +80,37 @@ echo $cadena;
  */
 function avisos()
 {
-	global $con;
-	$texto="<input type='button' class='boton' value='[<]Ocultar Avisos' 
-	onclick='cerrar_avisos()'/>
-	<table class='tabla'><tr><th colspan='2'>Cartel de Avisos</th></tr>
-	<tr><th>Cumplea&ntilde;os</th><th>Contratos</th></tr>";
+// 	global $con;
+// 	$texto="<input type='button' class='boton' value='[<]Ocultar Avisos' 
+// 	onclick='cerrar_avisos()'/>
+// 	<table class='tabla'><tr><th colspan='2'>Cartel de Avisos</th></tr>
+// 	<tr><th>Cumplea&ntilde;os</th><th>Contratos</th></tr>";
 	
 	//Esto es solo para cumpleaños, tablas con fecha nacimiento
 	//tres tablas, empleados[FechNac],pcentral[cumple],pempresa[cumple]
 	/*Contador*/
-	$k=0;
-	$texto.= "<tr><td valign='top'>
-	<table width='100%'><tr><th colspan='2'>Hoy hace los a&ntilde;os</th></tr>";
-	// personas de la central
-	$sql ="SELECT  
-		clientes.Nombre, 
-		pcentral.persona_central, 
-		pcentral.cumple,
-	clientes.id
-	FROM clientes INNER JOIN pcentral ON clientes.Id = pcentral.idemp 
-	where date_format(pcentral.cumple,'%d %c') 
-	like date_format(curdate(),'%d %c') and clientes.Estado_de_cliente != 0";
-	$consulta = mysql_query( $sql, $con );
-	$nocump=0;
-	if(mysql_numrows($consulta)!=0) {
-		$nocump=1;
-		while(true == ($resultado = mysql_fetch_array($consulta))) {
-		    $texto .= "<tr><td class='".clase($k++)."' colspan='2'>".
-		    $resultado[1]." de <a href='javascript:muestra($resultado[3])'>"
-		        .$resultado[0]."</a></td></tr>";
-		}
-	}
+// 	$k=0;
+// 	$texto.= "<tr><td valign='top'>
+// 	<table width='100%'><tr><th colspan='2'>Hoy hace los a&ntilde;os</th></tr>";
+// 	// personas de la central
+// 	$sql ="SELECT  
+// 		clientes.Nombre, 
+// 		pcentral.persona_central, 
+// 		pcentral.cumple,
+// 	clientes.id
+// 	FROM clientes INNER JOIN pcentral ON clientes.Id = pcentral.idemp 
+// 	where date_format(pcentral.cumple,'%d %c') 
+// 	like date_format(curdate(),'%d %c') and clientes.Estado_de_cliente != 0";
+// 	$consulta = mysql_query( $sql, $con );
+// 	$nocump=0;
+// 	if(mysql_numrows($consulta)!=0) {
+// 		$nocump=1;
+// 		while(true == ($resultado = mysql_fetch_array($consulta))) {
+// 		    $texto .= "<tr><td class='".clase($k++)."' colspan='2'>".
+// 		    $resultado[1]." de <a href='javascript:muestra($resultado[3])'>"
+// 		        .$resultado[0]."</a></td></tr>";
+// 		}
+// 	}
 	// personas de la empresa
 	$sql ="SELECT  
 		clientes.Nombre, 

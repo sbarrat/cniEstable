@@ -23,8 +23,21 @@
 require_once 'CniDB.php';
 final class Cni
 {
+    const SISTEMA = 'windows';
+    const ALMACENAJE = 0.70;
+    const IVA = 18;
+    const APLICACION = 'Aplicación Gestión Independencia Centro Negocios';
+    const VERSION = '2.0e';
+    
+    public static function initApp()
+    {
+        error_reporting(0);
+        date_default_timezone_set('Europe/Madrid');
+        setlocale(LC_ALL, 'es_ES');
+        setlocale(LC_NUMERIC, 'es_ES');
+    }
     /**
-     * Devuelve el precio formateado con 2 decimales separados por , miles . y
+     * Devuelve el precio formateado con 2 decimales separados por, miles . y
      * el simbolo del Euro
      * 
      * @param string $number
@@ -67,9 +80,9 @@ final class Cni
      * @param integer $k
      * @return string
      */
-    public static function clase($k)
+    public static function clase( $numeroLinea )
     {
-        return ( $k%2 == 0 ) ? 'par' : 'impar';
+        return ( $numeroLinea % 2 == 0 ) ? 'par' : 'impar';
     }
     /**
      * Ejecuta la consulta y devuelve los resultados
@@ -80,8 +93,12 @@ final class Cni
      */
     public static function consulta( $sql, $type = PDO::FETCH_BOTH )
     {
-        $con = CniDB::connect();
-        return $con->query($sql, $type);
+        try {
+            $con = CniDB::connect();
+            return $con->query($sql, $type);
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
+        }
     }
     /**
      * Sanea las variables
@@ -90,11 +107,13 @@ final class Cni
      * @param integer $type - INPUT_POST, INPUT_GET
      * @return mixed:string|array
      */
-    public static function  sanitize( $vars, $type = INPUT_POST ) 
+    public static function sanitize( $vars, $type = INPUT_POST ) 
     {
         if ( is_array($vars) ) {
-            foreach ( $vars as $key => $var ) {
-                $newVar[$key] = filter_input($type, $key);
+            reset($vars);
+            while ( current($vars) ) {
+                $newVar[key($vars)] = filter_input($type, key($vars));
+                next($vars);
             }
         } else {
             $newVar = filter_input($type, $vars);

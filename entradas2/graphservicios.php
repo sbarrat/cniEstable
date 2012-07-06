@@ -1,6 +1,18 @@
 <?php
-/*
- * Grafica de movimientos de clientes
+/**
+ * Graphservicios File Doc Comment
+ *
+ * Grafica de los servicios
+ *
+ * Genera la grafica pedida por pantalla
+ *
+ * PHP Version 5.2.6
+ *
+ * @author  Ruben Lacasa <ruben@ensenalia.com>
+ * @package cniEstable/entradas
+ * @license Creative Commons Atribución-NoComercial-SinDerivadas 3.0 Unported
+ * @version 2.0e Estable
+ * @link    https://github.com/sbarrat/cniEstable
  */
 require_once 'jpgraph/jpgraph.php';
 require_once 'jpgraph/jpgraph_pie.php';
@@ -15,7 +27,9 @@ $entradas->setAnyos();
 $graph = new PieGraph(900, 800);
 $graph->SetShadow();
 $graph->SetScale('textint');
-$graph->title->Set("Servicios Consumidos por clientes externos de {$datos[1]} a {$datos[2]}");
+$graph->title->Set(
+    "Servicios Consumidos por clientes externos de {$datos[1]} a {$datos[2]}"
+);
 $graph->title->SetFont(FF_DEFAULT, FS_BOLD, 10);
 foreach ($entradas->serviciosExternos(TRUE) as $servicios) {
     $totales[] = $servicios['Total'];

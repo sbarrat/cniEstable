@@ -34,26 +34,28 @@ if ( isset($_GET['error']) ) {
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="estilo/cni.css" rel="stylesheet" type="text/css"></link>
-<link href="estilo/calendario.css" rel="stylesheet" type="text/css"></link>
+<link href="estilo/cni.css" rel="stylesheet" type="text/css">
+<link href="estilo/calendario.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src='js/prototype.js'></script>
 <script type="text/javascript" src="js/calendar.js"></script>
 <script type="text/javascript" src="js/lang/calendar-es.js"></script>
 <script type="text/javascript" src="js/calendar-setup.js"></script>
 <script type="text/javascript" src='js/independencia.js'></script>
-<title>Principal - <?php echo APLICACION; ?> - <?php echo VERSION; ?></title>
+<title>
+    Principal - <?php Cni::APLICACION; ?> - <?php echo Cni::VERSION; ?>
+</title>
 </head>
 <body>
 <div id='cuerpo'>
 <?php
 if ( isset($_SESSION['usuario']) ) {
-	include_once 'inc/menu.php';
+    include_once 'inc/menu.php';
 } else {
-?>
-<div id='registro'>
+    ?>
+    <div id='registro'>
     <center>
-<!-- 	    <img src='imagenes/logotipo2.png' width='538px'  -->
-<!-- 	        alt='The Perfect Place' /> -->
+    <!-- 	    <img src='imagenes/logotipo2.png' width='538px'  -->
+    <!-- 	        alt='The Perfect Place' /> -->
     </center>
     <p />
     <center>
@@ -107,20 +109,20 @@ if ( isset($_SESSION['usuario']) ) {
   	        </a>  
         </p>
     </center>
-</div>
-<?php 
-} // Fin del formulario en la seccion de no registrado 
+    </div>
+    <?php 
+    } // Fin del formulario en la seccion de no registrado 
 ?>
 </div>
 <div id='datos_interesantes'></div>
 <div id='debug'></div>
 <?php 
 if ( isset($_SESSION['usuario']) ) {
-	echo "<div id='avisos'>";
-	include_once 'inc/avisos.php';//Se muestran los avisos solo con el include
-	echo "</div>";
-	echo "<div id='resultados'></div>";//linea de los resultados de busqueda
-	echo "<div id='formulario'></div>";//linea del formulario
+    echo "<div id='avisos'>";
+    include_once 'inc/avisos.php';//Se muestran los avisos solo con el include
+    echo "</div>";
+    echo "<div id='resultados'></div>";//linea de los resultados de busqueda
+    echo "<div id='formulario'></div>";//linea del formulario
 }
 ?>
 </body>

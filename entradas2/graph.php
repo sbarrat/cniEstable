@@ -1,6 +1,18 @@
 <?php
-/*
- * Grafica de movimientos de clientes
+/**
+ * Graph File Doc Comment
+ *
+ * Genera la grafica de movimientos
+ *
+ * Grafica de movimientos de Cliente.
+ *
+ * PHP Version 5.2.6
+ *
+ * @author  Ruben Lacasa <ruben@ensenalia.com>
+ * @package cniEstable/entradas
+ * @license Creative Commons Atribución-NoComercial-SinDerivadas 3.0 Unported
+ * @version 2.0e Estable
+ * @link    https://github.com/sbarrat/cniEstable
  */
 require_once 'jpgraph/jpgraph.php';
 require_once 'jpgraph/jpgraph_line.php';
@@ -21,7 +33,9 @@ $graph->SetScale('textint');
 $graph->img->SetMargin(80, 30, 30, 40);
 $graph->SetShadow();
 $graph->SetFrame(false);
-$graph->title->Set("Cuadro de Entradas y Salidas {$datos[1]} de {$datos[2]} a {$datos[3]}");
+$graph->title->Set(
+    "Cuadro de Entradas y Salidas {$datos[1]} de {$datos[2]} a {$datos[3]}"
+);
 $graph->title->SetFont(FF_DEFAULT, FS_BOLD, 10);
 $graph->xaxis->title->Set('(Meses)');
 $graph->xaxis->SetTickLabels($meses);

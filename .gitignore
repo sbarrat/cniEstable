@@ -1,4 +1,9 @@
 /.settings
 /.buildpath
 /.project
+/cache.properties
+/.buildpath
+/.cniEstable.sublime*
 /build
+/deployment.xml
+/deployment.properties

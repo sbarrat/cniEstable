@@ -26,12 +26,10 @@ final class CniDB
     private static $_dsn = "mysql:dbname=centro;host=localhost;port=3306";
     private static $_user = 'cni';
     private static $_password = 'inc';
-    private static $_options = array(
-        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
-        );
+    private static $_options = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8");
     /**
      * Deny Construct
-    */
+     */
     private function __construct()
     {
     }
@@ -44,16 +42,16 @@ final class CniDB
     /**
      * Funcion de conexion a la base de datos
      */
-    static function connect()
+    public static function connect()
     {
 
-        if ( is_null(self::$_handle) ) {
+        if ( is_null( self::$_handle ) ) {
             try {
                 self::$_handle = new PDO(
-                    self::$_dsn, self::$_user, self::$_password, self::$_options
+                        self::$_dsn, self::$_user, self::$_password, self::$_options
                 );
-            } catch ( PDOException $error ){
-                die ( $error->getMessage() );
+            } catch ( PDOException $error ) {
+                var_dump ($error->getMessage());
             }
         }
         return self::$_handle;

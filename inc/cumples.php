@@ -2,17 +2,17 @@
 /**
  * Cumples File Doc Comment
  *
- * Fichero Gestion la seccion de Cumpleaños del menu
+ * Clase que gestiona los Cumpleaños
+ *
+ * Clase que muestra los distintos avisos de la aplicacion
  *
  * PHP Version 5.2.6
  *
- * @category Cumples
- * @package  cni/inc
- * @author   Ruben Lacasa Mas <ruben@ensenalia.com>
- * @license  http://creativecommons.org/licenses/by-nc-nd/3.0/
- * 			 Creative Commons Reconocimiento-NoComercial-SinObraDerivada 3.0 Unported
- * @link     https://github.com/independenciacn/cni
- * @version  2.0e Estable
+ * @author  Ruben Lacasa <ruben@ensenalia.com>
+ * @package cniEstable/inc
+ * @license Creative Commons Atribución-NoComercial-SinDerivadas 3.0 Unported
+ * @version 2.0e Estable
+ * @link    https://github.com/sbarrat/cniEstable
  */
 /**
  * Cumples Class Doc Comment

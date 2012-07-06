@@ -1,14 +1,37 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<?php
+/**
+ * Index File Doc Comment
+ *
+ * Pagina principal Modulo Entradas y Salidas
+ *
+ * Pagina principal del Modulo de Entradas y Salidas en la que se muestran
+ * las estadisticas de los despachos y servicios
+ *
+ * PHP Version 5.2.6
+ *
+ * @author  Ruben Lacasa <ruben@ensenalia.com>
+ * @package cniEstable/entradas
+ * @license Creative Commons Atribución-NoComercial-SinDerivadas 3.0 Unported
+ * @version 2.0e Estable
+ * @link    https://github.com/sbarrat/cniEstable
+ */
+$year = date('Y');
+$yearRange = array_fill(2008, $year-2008, 0);
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href='http://fonts.googleapis.com/css?family=Reenie+Beanie' rel='stylesheet' type='text/css'></link>
+<link href='http://fonts.googleapis.com/css?family=Reenie+Beanie' 
+    rel='stylesheet' type='text/css'></link>
 <link href="css/custom-theme/jquery-ui-1.8.8.custom.css"
 	rel="stylesheet" type="text/css"></link>
 <link href="css/entradas.css" rel="stylesheet" type="text/css"></link>
-<title>Cuadro de Entradas, Salidas y Comparativas - The Perfect Place <?php
-echo date ( 'Y' );
-?></title>
+<title>
+    Cuadro de Entradas, Salidas y Comparativas - The Perfect Place 
+    <?php echo $year; ?>
+</title>
 <script src='js/jquery-1.4.4.min.js' type="text/javascript"></script>
 <script src='js/jquery-ui-1.8.8.custom.min.js' type="text/javascript"></script>
 </head>
@@ -25,18 +48,18 @@ datos que desea visualizar</p>
 <form id='frmopciones' action="" method="post"><select id='inicio'
 	name='inicio'>
 	<option value='0'>--Año Inicial--</option>
-				<?php
-				for($i = '2008'; $i <= date ( 'Y' ); $i ++) {
-					echo "<option value='" . $i . "'>" . $i . "</option>";
-				}
+				<?php 
+				foreach ( $yearRange as $key => $val ) {
+                    echo "<option value='" . $key . "'>" . $key . "</option>";
+                }
 				?>
 			</select> <span class='flecha'>&raquo;</span> <select id='fin'
 	name='fin'>
 	<option value='0'>--Año Final--</option>
 				<?php
-				for($i = '2008'; $i <= date ( 'Y' ); $i ++) {
-					echo "<option value='" . $i . "'>" . $i . "</option>";
-				}
+                foreach ( $yearRange as $key => $val ) {
+                    echo "<option value='" . $key . "'>" . $key . "</option>";
+                }
 				?>
 			</select> <span class='flecha'>&raquo;</span> <select id='vista'
 	name='vista'>
@@ -59,16 +82,15 @@ datos que desea visualizar</p>
 <!-- Visualizaremos el resultado de la opción seleccionada --></div>
 
 
-<div id='footer'>devel by <a href="http://rubenlacasa.wordpress.com" target="_blank">&copy;rubenlacasa::<?php
-echo date ( 'Y' )?></a></div>
+<div id='footer'>devel by <a href="http://rubenlacasa.wordpress.com" 
+    target="_blank">&copy;rubenlacasa::<?php echo $year;?></a>
+</div>
 </div>
 <script type='text/javascript'>
-
 $("input[type=reset]").click(function(){
 	$("#resultados").html("");
 	
 });
-
 $('#frmopciones').submit(function(){
 	$('select').removeClass('errorfrm');
 	var fallo = 0;
@@ -96,7 +118,8 @@ $('#frmopciones').submit(function(){
 	}
 	if($('#inicio').val() > $('#fin').val())
 	{
-		mensaje += "El año de fin debe ser mayor o igual que el año de inicio\n";
+		mensaje += "El año de fin debe ser mayor " + 
+			"o igual que el año de inicio\n";
 		$('#inicio').addClass('errorfrm');
 		$('#fin').addClass('errorfrm');
 		fallo = 1;

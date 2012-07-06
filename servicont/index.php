@@ -3,14 +3,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="estilo/servicont.css" rel="stylesheet" type="text/css"></link>
-<link href="../estilo/calendario.css" rel="stylesheet" type="text/css"></link>
+<link href="estilo/servicont.css" rel="stylesheet" type="text/css">
+<link href="../estilo/calendario.css" rel="stylesheet" type="text/css">
 <script src='js/servicont.js' type="text/javascript"></script>
 <script src='../js/prototype.js' type="text/javascript"></script>
 <script type="text/javascript" src="../js/calendar.js"></script>
 <script type="text/javascript" src="../js/lang/calendar-es.js"></script>
 <script type="text/javascript" src="../js/calendar-setup.js"></script>
-<title>Informes - <?php echo APLICACION; ?> - <?php echo VERSION; ?></title>
+<title>Informes - <?php echo Cni::APLICACION; ?> - <?php echo Cni::VERSION; ?></title>
 </head>
 <body>
 <div id='titulo'>

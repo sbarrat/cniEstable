@@ -1,8 +1,18 @@
 <?php
-/*
- * Variables posteadas: inicio, fin, vista, datos
- * Valores de vista: 1 = Acumulada, 2 = Detallada, 3 = Grafica
- * Valores de datos: 1 = Movimientos de Clientes, 2 = Consumo de Servicios
+/**
+ * Handler File Doc Comment
+ *
+ * Manejador de Acciones
+ *
+ * Manejador de las acciones solicitadas
+ *
+ * PHP Version 5.2.6
+ *
+ * @author  Ruben Lacasa <ruben@ensenalia.com>
+ * @package cniEstable/entradas
+ * @license Creative Commons Atribución-NoComercial-SinDerivadas 3.0 Unported
+ * @version 2.0e Estable
+ * @link    https://github.com/sbarrat/cniEstable
  */
 if (isset($_POST['inicio'])) {
     require_once 'clases/EntradasSalidas.php';

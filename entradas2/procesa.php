@@ -1,8 +1,18 @@
 <?php
-/*
- * Representacion del listado de los detallados cuando se hace 
- * clic en la vista de acumulados
- * TODO: Mejorar la presentacion de las tablas
+/**
+ * Procesa File Doc Comment
+ *
+ * Representación del listado
+ *
+ * Muestra por pantalla los listados y visualizaciones pedidas.
+ *
+ * PHP Version 5.2.6
+ *
+ * @author  Ruben Lacasa <ruben@ensenalia.com>
+ * @package cniEstable/entradas
+ * @license Creative Commons Atribución-NoComercial-SinDerivadas 3.0 Unported
+ * @version 2.0e Estable
+ * @link    https://github.com/sbarrat/cniEstable
  */
 require_once 'clases/EntradasSalidas.php';
 $entradas = new EntradasSalidas();
@@ -117,7 +127,11 @@ if (isset($_POST['servicio'])) {
         $html .= "<tr><td> No hay datos </td></tr>";
     } else {
         $detalles = 
-        $entradas->detallesServiciosExternos(urldecode($dato[1]), $dato[2], $dato[3]);
+        $entradas->detallesServiciosExternos(
+            urldecode($dato[1]), 
+            $dato[2], 
+            $dato[3]
+        );
         $html .= "
         <tr>
          <th class='acumulada'>Cliente</th>
@@ -173,29 +187,31 @@ if (isset($_POST['cliente'])) {
     $html .= "</table>";
     echo $html;
 }
-if (isset($_POST['ocupacion'])){
+if ( isset($_POST['ocupacion']) ) {
     $anyoFinal = NULL;
-    $dato = explode('#',urldecode($_POST['ocupacion']));
+    $dato = explode('#', urldecode($_POST['ocupacion']));
     $class = "celdadialog";
-    if($dato[2]!=100){
-        if( $dato[2]> '11' ){
+    if ( $dato[2] != 100 ) {
+        if ( $dato[2] > '11' ) {
             $mes = $dato[2] - 11;
             $anyo = $_POST['fin'];
-        }
-        else {
+        } else {
             $mes = $dato[2] + 1;
             $anyo = $_POST['inicial'];
         } 
-    }
-    else{
+    } else {
             $mes = $dato[2];
             $anyo = $_POST['inicial'];
             $anyoFinal = $_POST['fin'];
             $class = "ui-widget-content";
-        }
-    
-        
-    $detalles = $entradas->DetallesOcupacionHoras($mes,$anyo,$dato[0],$dato[1],$anyoFinal);
+    }   
+    $detalles = $entradas->DetallesOcupacionHoras(
+        $mes,
+        $anyo,
+        $dato[0],
+        $dato[1],
+        $anyoFinal
+    );
     $i=0;
     $mes = 0;
     $inicio = 0;
@@ -213,9 +229,8 @@ if (isset($_POST['ocupacion'])){
             $nombre = $detalle['Nombre'];
             $servicio = $detalle['Servicio'];
             $fecha = $entradas->fecha->cambiaf($detalle['fecha']);
-            if($mes != $entradas->fecha->verMes($detalle["fecha"]))
-            {
-                if($inicio!=0){
+            if ( $mes != $entradas->fecha->verMes($detalle["fecha"]) ) {
+                if ( $inicio!=0 ) {
                     $html .= "<tr class='ui-widget-content'>
                  <td colspan='4'>
                  <strong>Total {$i}</strong>
