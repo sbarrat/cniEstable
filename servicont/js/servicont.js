@@ -5,38 +5,49 @@
 /*
  * Funcion que envia la peticion y genera el formulario
  */ 
-function menu(form){
-	var url="estadisticas.php";
-	var pars="opcion=0&form="+form;
-	var myAjax = new Ajax.Request(url,
-	{
-		method:'post',
-		parameters: pars,
-		onCreate:$('formulario').innerHTML = "<center><img src='imagenes/loading.gif' alt='cargando' /></center>",
-		onComplete : function gen(respuesta)
-		{
-			$('formulario').innerHTML = respuesta.responseText;
-		}
-	});
-}
-/*
- * Funcion que recibe la peticion procesa y muestra la respuesta
- */
-function procesa()
-{
-	var url="estadisticas.php";
-	var pars="opcion=1&"+Form.serialize($('consulta'));
-	var myAjax = new Ajax.Request(url,
-	{
-		method:'post',
-		parameters: pars,
-		onCreate:$('resultados').innerHTML = "<center><img src='imagenes/loading.gif' alt='cargando' /></center>",
-		onComplete : function gen(respuesta)
-		{
-			$('resultados').innerHTML = respuesta.responseText;
-		}
-	});
-}
+(function() {
+    "use strict";
+    /**
+     * [menu description]
+     * 
+     * @param  {[type]} form [description]
+     * 
+     * @return {[type]}      [description]
+     */
+    function menu(form) {
+        var url="estadisticas.php";
+	   var pars="opcion=0&form="+form;
+	   var myAjax = new Ajax.Request(url,
+	   {
+		  method:'post',
+		  parameters: pars,
+		  onCreate:$('formulario').innerHTML = "<center><img src='imagenes/loading.gif' alt='cargando' /></center>",
+		  onComplete : function gen(respuesta)
+		  {
+		      $('formulario').innerHTML = respuesta.responseText;
+		  }
+	   });
+    }
+    /**
+     * Funcion que recibe la peticion procesa y muestra la respuesta
+     * 
+     * @return {[type]} [description]
+     */
+    function procesa()
+    {
+	   var url="estadisticas.php";
+	   var pars="opcion=1&"+Form.serialize($('consulta'));
+	   var myAjax = new Ajax.Request(url,
+	   {
+		  method:'post',
+		  parameters: pars,
+		  onCreate:$('resultados').innerHTML = "<center><img src='imagenes/loading.gif' alt='cargando' /></center>",
+		  onComplete : function gen(respuesta)
+		  {
+		      $('resultados').innerHTML = respuesta.responseText;
+		  }
+	   });
+    }
 /*
  * Segun el tipo de comparativa muestra una cosa u otra
  */
@@ -91,3 +102,4 @@ function campos_fecha()
         			step           :    1                // show all years in drop-down boxes (instead of every other year as default)
 					});
 }
+});
