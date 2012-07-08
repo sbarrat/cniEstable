@@ -31,12 +31,12 @@ if ( isset( $_SESSION['usuario']) ) {
 /*
  * Cambio de Formato de Fecha
  */  
-function cambiaf($stamp) {
-	$fdia = explode ( "-", $stamp );
-	$fdia2 = explode ( " ", $fdia [2] );
-	$fecha = $fdia2 [0] . "-" . $fdia [1] . "-" . $fdia [0];
-	return $fecha;
-}
+// function cambiaf($stamp) {
+// 	$fdia = explode ( "-", $stamp );
+// 	$fdia2 = explode ( " ", $fdia [2] );
+// 	$fecha = $fdia2 [0] . "-" . $fdia [1] . "-" . $fdia [0];
+// 	return $fecha;
+// }
 /*
  * Devuelve el nombre del cliente
  */
@@ -186,7 +186,7 @@ function anyo($modo) {
 	$select .= "</select>";
 	return $select;
 }
-	/*
+/*
  * Select de servicios
  */
 function servicios() {
