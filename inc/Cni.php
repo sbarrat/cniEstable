@@ -14,36 +14,34 @@
  * @version 2.0e Estable
  * @link    https://github.com/sbarrat/cniEstable
  */
-require_once 'CniDB.php';
 /**
  * Cni Class Doc Comment
  * 
  * Funciones estaticas generales de toda la aplicacion
  *
  */
+require_once 'CniDB.php';
 final class Cni
 {
     const SISTEMA = 'windows';
     const ALMACENAJE = 0.70;
     const IVA = 18;
     const APLICACION = 'Aplicación Gestión Independencia Centro Negocios';
-    const VERSION = '2.0e';    
-    /**
-     * [initApp description]
-     * @return [type] [description]
-     */
+    const VERSION = '2.0e';
+    
     public static function initApp()
     {
-        error_reporting(E_ALL);
+        error_reporting(0);
         date_default_timezone_set('Europe/Madrid');
         setlocale(LC_ALL, 'es_ES');
         setlocale(LC_NUMERIC, 'es_ES');
     }
     /**
-     * Devuelve el precio formateado con 2 decimales separados por, miles y
-     * el simbolo del euro
-     * @param  String $number [description]
-     * @return String         [description]
+     * Devuelve el precio formateado con 2 decimales separados por, miles . y
+     * el simbolo del Euro
+     * 
+     * @param string $number
+     * @return string
      */
     public static function formatoDinero($number)
     {
@@ -122,17 +120,4 @@ final class Cni
         }
         return $newVar;
     }
-    /**
-     * Cambia el formato de la fecha de un formato a otro
-     * 
-     * @param  string $stamp fecha en formato original
-     * @return string        fecha en el formato deseado
-     */
-    public static function cambiaf( $stamp ) 
-    {
-        $fdia = explode ( "-", $stamp );
-        $fdia2 = explode ( " ", $fdia [2] );
-        $fecha = $fdia2 [0] . "-" . $fdia [1] . "-" . $fdia [0];
-        return $fecha;
-}
 }
